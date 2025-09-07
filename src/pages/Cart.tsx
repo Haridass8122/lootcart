@@ -7,6 +7,10 @@ import { Layout } from "@/components/Layout";
 import { Input } from "@/components/ui/input";
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight } from "lucide-react";
 
+// Import product images
+import headphonesImage from "@/assets/headphones.jpg";
+import coffeeMakerImage from "@/assets/coffee-maker.jpg";
+
 interface CartItem {
   id: string;
   name: string;
@@ -24,7 +28,7 @@ const Cart = () => {
       name: "Wireless Bluetooth Headphones",
       price: 79.99,
       originalPrice: 99.99,
-      image: "/api/placeholder/100/100",
+      image: headphonesImage,
       quantity: 1,
       category: "Electronics",
     },
@@ -32,7 +36,7 @@ const Cart = () => {
       id: "2",
       name: "Premium Coffee Maker",
       price: 149.99,
-      image: "/api/placeholder/100/100",
+      image: coffeeMakerImage,
       quantity: 2,
       category: "Home & Kitchen",
     },

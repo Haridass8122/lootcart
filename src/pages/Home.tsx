@@ -13,6 +13,12 @@ import {
 } from "@/components/ui/carousel";
 import { Search, ArrowRight, TrendingUp, Gift, Truck, Shield } from "lucide-react";
 
+// Import product images
+import headphonesImage from "@/assets/headphones.jpg";
+import coffeeMakerImage from "@/assets/coffee-maker.jpg";
+import fitnessWatchImage from "@/assets/fitness-watch.jpg";
+import phoneChargerImage from "@/assets/phone-charger.jpg";
+
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -23,7 +29,7 @@ const Home = () => {
       name: "Wireless Bluetooth Headphones",
       price: 79.99,
       originalPrice: 99.99,
-      image: "/api/placeholder/300/300",
+      image: headphonesImage,
       rating: 4.5,
       reviews: 128,
       isOnSale: true,
@@ -34,7 +40,7 @@ const Home = () => {
       id: "2",
       name: "Premium Coffee Maker",
       price: 149.99,
-      image: "/api/placeholder/300/300",
+      image: coffeeMakerImage,
       rating: 4.8,
       reviews: 89,
       category: "Home & Kitchen",
@@ -44,7 +50,7 @@ const Home = () => {
       name: "Fitness Tracker Watch",
       price: 199.99,
       originalPrice: 249.99,
-      image: "/api/placeholder/300/300",
+      image: fitnessWatchImage,
       rating: 4.3,
       reviews: 205,
       isOnSale: true,
@@ -55,7 +61,7 @@ const Home = () => {
       id: "4",
       name: "Portable Phone Charger",
       price: 29.99,
-      image: "/api/placeholder/300/300",
+      image: phoneChargerImage,
       rating: 4.6,
       reviews: 324,
       category: "Electronics",

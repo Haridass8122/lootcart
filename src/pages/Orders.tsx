@@ -6,6 +6,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Layout } from "@/components/Layout";
 import { Package, Truck, CheckCircle, Clock, Eye, RotateCcw } from "lucide-react";
 
+// Import product images
+import headphonesImage from "@/assets/headphones.jpg";
+import coffeeMakerImage from "@/assets/coffee-maker.jpg";
+import fitnessWatchImage from "@/assets/fitness-watch.jpg";
+import phoneChargerImage from "@/assets/phone-charger.jpg";
+import phoneCaseImage from "@/assets/phone-case.jpg";
+
 interface Order {
   id: string;
   orderNumber: string;
@@ -33,14 +40,14 @@ const Orders = () => {
         {
           id: "1",
           name: "Wireless Bluetooth Headphones",
-          image: "/api/placeholder/80/80",
+          image: headphonesImage,
           price: 79.99,
           quantity: 1,
         },
         {
           id: "2",
           name: "Premium Coffee Maker",
-          image: "/api/placeholder/80/80",
+          image: coffeeMakerImage,
           price: 149.99,
           quantity: 1,
         },
@@ -56,7 +63,7 @@ const Orders = () => {
         {
           id: "3",
           name: "Fitness Tracker Watch",
-          image: "/api/placeholder/80/80",
+          image: fitnessWatchImage,
           price: 199.99,
           quantity: 1,
         },
@@ -72,14 +79,14 @@ const Orders = () => {
         {
           id: "4",
           name: "Portable Phone Charger",
-          image: "/api/placeholder/80/80",
+          image: phoneChargerImage,
           price: 29.99,
           quantity: 2,
         },
         {
           id: "5",
           name: "Phone Case",
-          image: "/api/placeholder/80/80",
+          image: phoneCaseImage,
           price: 29.99,
           quantity: 1,
         },
