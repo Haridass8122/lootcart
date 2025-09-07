@@ -19,6 +19,14 @@ import coffeeMakerImage from "@/assets/coffee-maker.jpg";
 import fitnessWatchImage from "@/assets/fitness-watch.jpg";
 import phoneChargerImage from "@/assets/phone-charger.jpg";
 
+// Import category images
+import electronicsCategory from "@/assets/category-electronics.jpg";
+import fashionCategory from "@/assets/category-fashion.jpg";
+import homeKitchenCategory from "@/assets/category-home-kitchen.jpg";
+import sportsFitnessCategory from "@/assets/category-sports-fitness.jpg";
+import booksCategory from "@/assets/category-books.jpg";
+import beautyCategory from "@/assets/category-beauty.jpg";
+
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -69,12 +77,12 @@ const Home = () => {
   ];
 
   const categories = [
-    { name: "Electronics", count: 1234, color: "bg-primary" },
-    { name: "Fashion", count: 856, color: "bg-accent" },
-    { name: "Home & Kitchen", count: 642, color: "bg-success" },
-    { name: "Sports & Fitness", count: 428, color: "bg-warning" },
-    { name: "Books", count: 291, color: "bg-info" },
-    { name: "Beauty", count: 537, color: "bg-destructive" },
+    { name: "Electronics", count: 1234, color: "bg-primary", image: electronicsCategory },
+    { name: "Fashion", count: 856, color: "bg-accent", image: fashionCategory },
+    { name: "Home & Kitchen", count: 642, color: "bg-success", image: homeKitchenCategory },
+    { name: "Sports & Fitness", count: 428, color: "bg-warning", image: sportsFitnessCategory },
+    { name: "Books", count: 291, color: "bg-info", image: booksCategory },
+    { name: "Beauty", count: 537, color: "bg-destructive", image: beautyCategory },
   ];
 
   return (
@@ -168,7 +176,13 @@ const Home = () => {
                 key={index}
                 className="group p-6 rounded-xl bg-gradient-card border border-border hover:shadow-card transition-all duration-300 cursor-pointer hover:-translate-y-1"
               >
-                <div className={`w-12 h-12 ${category.color} rounded-lg mb-4 mx-auto opacity-80 group-hover:opacity-100 transition-opacity`} />
+                <div className="relative w-16 h-16 mx-auto mb-4 overflow-hidden rounded-lg">
+                  <img 
+                    src={category.image} 
+                    alt={category.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
                 <h3 className="font-semibold text-center mb-1">{category.name}</h3>
                 <p className="text-sm text-muted-foreground text-center">
                   {category.count} items
