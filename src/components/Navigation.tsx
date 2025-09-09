@@ -59,11 +59,17 @@ export const Navigation = () => {
           {/* Search Bar - Hidden on mobile */}
           <div className="hidden md:flex flex-1 max-w-lg mx-8">
             <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary" />
               <Input
                 placeholder="Search products..."
-                className="pl-10 bg-secondary border-0 focus-visible:ring-primary"
+                className="pl-11 bg-secondary border border-primary/20 focus-visible:ring-primary focus-visible:ring-2 focus-visible:border-primary"
               />
+              <Button
+                size="sm"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 h-7 px-3 bg-primary hover:bg-primary/90"
+              >
+                Search
+              </Button>
             </div>
           </div>
 
@@ -204,8 +210,17 @@ export const Navigation = () => {
                 <div className="mt-6 space-y-4">
                   {/* Mobile Search */}
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input placeholder="Search products..." className="pl-10" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary" />
+                    <Input 
+                      placeholder="Search products..." 
+                      className="pl-11 pr-20 border-primary/20 focus-visible:ring-primary" 
+                    />
+                    <Button
+                      size="sm"
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 h-7 px-3 bg-primary hover:bg-primary/90"
+                    >
+                      Search
+                    </Button>
                   </div>
 
                   {isLoggedIn ? (

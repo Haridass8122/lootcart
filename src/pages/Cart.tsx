@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Layout } from "@/components/Layout";
 import { Input } from "@/components/ui/input";
-import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, ArrowLeft } from "lucide-react";
+import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, ArrowLeft, Home } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 // Import product images
@@ -97,14 +97,24 @@ const Cart = () => {
     <Layout>
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center gap-4 mb-8">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate(-1)}
-            className="hover:bg-secondary"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => navigate(-1)}
+              className="hover:bg-primary hover:text-primary-foreground border-primary/20 bg-primary/5"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate("/")}
+              className="hover:bg-secondary text-primary"
+            >
+              <Home className="h-5 w-5" />
+            </Button>
+          </div>
           <div>
             <h1 className="text-3xl font-bold mb-2">Shopping Cart</h1>
             <p className="text-muted-foreground">

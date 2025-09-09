@@ -18,7 +18,8 @@ import {
   Clock,
   ShoppingCart,
   AlertCircle,
-  ArrowLeft
+  ArrowLeft,
+  Home
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -259,14 +260,24 @@ const Notifications = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => navigate(-1)}
-              className="hover:bg-secondary"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => navigate(-1)}
+                className="hover:bg-primary hover:text-primary-foreground border-primary/20 bg-primary/5"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => navigate("/")}
+                className="hover:bg-secondary text-primary"
+              >
+                <Home className="h-5 w-5" />
+              </Button>
+            </div>
             <div>
               <h1 className="text-3xl font-bold mb-2">Notifications</h1>
               <p className="text-muted-foreground">
