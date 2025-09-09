@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/ProductCard";
 import { Layout } from "@/components/Layout";
-import { Heart, ShoppingBag, ArrowRight } from "lucide-react";
+import { Heart, ShoppingBag, ArrowRight, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 // Import product images
 import headphonesImage from "@/assets/headphones.jpg";
@@ -25,6 +26,7 @@ interface WishlistItem {
 }
 
 const Wishlist = () => {
+  const navigate = useNavigate();
   const [wishlistItems, setWishlistItems] = useState<WishlistItem[]>([
     {
       id: "1",
@@ -118,11 +120,21 @@ const Wishlist = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">My Wishlist</h1>
-            <p className="text-muted-foreground">
-              {wishlistItems.length} {wishlistItems.length === 1 ? 'item' : 'items'} saved for later
-            </p>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate(-1)}
+              className="hover:bg-secondary"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <div>
+              <h1 className="text-3xl font-bold mb-2">My Wishlist</h1>
+              <p className="text-muted-foreground">
+                {wishlistItems.length} {wishlistItems.length === 1 ? 'item' : 'items'} saved for later
+              </p>
+            </div>
           </div>
           
           {wishlistItems.length > 0 && (
@@ -152,7 +164,7 @@ const Wishlist = () => {
           </div>
           <div className="bg-gradient-card border border-border rounded-lg p-4 text-center">
             <div className="text-2xl font-bold text-primary mb-1">
-              ${wishlistItems.reduce((sum, item) => sum + item.price, 0).toFixed(2)}
+              ₹{wishlistItems.reduce((sum, item) => sum + item.price, 0).toFixed(2)}
             </div>
             <div className="text-sm text-muted-foreground">Total Value</div>
           </div>

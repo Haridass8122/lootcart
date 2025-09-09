@@ -21,10 +21,13 @@ import {
   ArrowRight,
   Package,
   RotateCcw,
-  CreditCard
+  CreditCard,
+  ArrowLeft
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Help = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
 
   const faqCategories = [
@@ -38,7 +41,7 @@ const Help = () => {
         },
         {
           question: "What are the shipping costs?",
-          answer: "We offer free shipping on orders over $50. For orders under $50, shipping costs $9.99. Premium members get free shipping on all orders.",
+          answer: "We offer free shipping on orders over ₹50. For orders under ₹50, shipping costs ₹9.99. Premium members get free shipping on all orders.",
         },
         {
           question: "How long does delivery take?",
@@ -154,21 +157,31 @@ const Help = () => {
     <Layout>
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">How can we help you?</h1>
-          <p className="text-muted-foreground text-lg mb-8">
-            Find answers to your questions or get in touch with our support team
-          </p>
-          
-          {/* Search */}
-          <div className="max-w-lg mx-auto relative">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-            <Input
-              placeholder="Search for help topics..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 h-12 text-lg bg-background border-border"
-            />
+        <div className="flex items-center gap-4 mb-12">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate(-1)}
+            className="hover:bg-secondary"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <div className="text-center flex-1">
+            <h1 className="text-4xl font-bold mb-4">How can we help you?</h1>
+            <p className="text-muted-foreground text-lg mb-8">
+              Find answers to your questions or get in touch with our support team
+            </p>
+            
+            {/* Search */}
+            <div className="max-w-lg mx-auto relative">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Input
+                placeholder="Search for help topics..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-12 h-12 text-lg bg-background border-border"
+              />
+            </div>
           </div>
         </div>
 

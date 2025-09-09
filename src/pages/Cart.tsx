@@ -5,7 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Layout } from "@/components/Layout";
 import { Input } from "@/components/ui/input";
-import { Minus, Plus, Trash2, ShoppingBag, ArrowRight } from "lucide-react";
+import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 // Import product images
 import headphonesImage from "@/assets/headphones.jpg";
@@ -22,6 +23,7 @@ interface CartItem {
 }
 
 const Cart = () => {
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState<CartItem[]>([
     {
       id: "1",
@@ -94,11 +96,21 @@ const Cart = () => {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Shopping Cart</h1>
-          <p className="text-muted-foreground">
-            {cartItems.length} {cartItems.length === 1 ? 'item' : 'items'} in your cart
-          </p>
+        <div className="flex items-center gap-4 mb-8">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate(-1)}
+            className="hover:bg-secondary"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <div>
+            <h1 className="text-3xl font-bold mb-2">Shopping Cart</h1>
+            <p className="text-muted-foreground">
+              {cartItems.length} {cartItems.length === 1 ? 'item' : 'items'} in your cart
+            </p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -127,11 +139,11 @@ const Cart = () => {
                           <h3 className="font-semibold mb-2">{item.name}</h3>
                           <div className="flex items-center space-x-2">
                             <span className="font-bold text-primary">
-                              ${item.price.toFixed(2)}
+                              ₹{item.price.toFixed(2)}
                             </span>
                             {item.originalPrice && (
                               <span className="text-sm text-muted-foreground line-through">
-                                ${item.originalPrice.toFixed(2)}
+                                ₹{item.originalPrice.toFixed(2)}
                               </span>
                             )}
                           </div>
@@ -174,7 +186,7 @@ const Cart = () => {
                           <Plus className="w-3 h-3" />
                         </Button>
                         <span className="text-sm text-muted-foreground ml-4">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          ₹{(item.price * item.quantity).toFixed(2)}
                         </span>
                       </div>
                     </div>
@@ -193,7 +205,7 @@ const Cart = () => {
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
+                    <span>₹{subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Shipping</span>
@@ -201,27 +213,27 @@ const Cart = () => {
                       {shipping === 0 ? (
                         <Badge variant="secondary" className="text-xs">FREE</Badge>
                       ) : (
-                        `$${shipping.toFixed(2)}`
+                        `₹${shipping.toFixed(2)}`
                       )}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Tax</span>
-                    <span>${tax.toFixed(2)}</span>
+                    <span>₹{tax.toFixed(2)}</span>
                   </div>
                   
                   <Separator />
                   
                   <div className="flex justify-between text-lg font-semibold">
                     <span>Total</span>
-                    <span className="text-primary">${total.toFixed(2)}</span>
+                    <span className="text-primary">₹{total.toFixed(2)}</span>
                   </div>
                 </div>
 
                 {shipping > 0 && (
                   <div className="mt-4 p-3 bg-secondary rounded-lg">
                     <p className="text-sm text-muted-foreground">
-                      Add ${(50 - subtotal).toFixed(2)} more for free shipping!
+                      Add ₹{(50 - subtotal).toFixed(2)} more for free shipping!
                     </p>
                   </div>
                 )}

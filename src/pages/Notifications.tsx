@@ -17,8 +17,10 @@ import {
   CheckCheck,
   Clock,
   ShoppingCart,
-  AlertCircle
+  AlertCircle,
+  ArrowLeft
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface Notification {
   id: string;
@@ -33,6 +35,7 @@ interface Notification {
 }
 
 const Notifications = () => {
+  const navigate = useNavigate();
   const [notifications, setNotifications] = useState<Notification[]>([
     {
       id: "1",
@@ -255,11 +258,21 @@ const Notifications = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">Notifications</h1>
-            <p className="text-muted-foreground">
-              {unreadCount > 0 ? `${unreadCount} unread notifications` : 'All caught up!'}
-            </p>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate(-1)}
+              className="hover:bg-secondary"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <div>
+              <h1 className="text-3xl font-bold mb-2">Notifications</h1>
+              <p className="text-muted-foreground">
+                {unreadCount > 0 ? `${unreadCount} unread notifications` : 'All caught up!'}
+              </p>
+            </div>
           </div>
           
           <div className="flex items-center space-x-3">

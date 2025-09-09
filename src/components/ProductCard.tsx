@@ -129,11 +129,11 @@ export const ProductCard = ({
         {/* Price */}
         <div className="flex items-center space-x-2">
           <span className="font-bold text-lg text-primary">
-            ${price.toFixed(2)}
+            ₹{price.toFixed(2)}
           </span>
           {originalPrice && (
             <span className="text-sm text-muted-foreground line-through">
-              ${originalPrice.toFixed(2)}
+              ₹{originalPrice.toFixed(2)}
             </span>
           )}
         </div>

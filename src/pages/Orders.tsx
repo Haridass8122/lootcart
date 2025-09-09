@@ -4,7 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Layout } from "@/components/Layout";
-import { Package, Truck, CheckCircle, Clock, Eye, RotateCcw } from "lucide-react";
+import { Package, Truck, CheckCircle, Clock, Eye, RotateCcw, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 // Import product images
 import headphonesImage from "@/assets/headphones.jpg";
@@ -29,6 +30,7 @@ interface Order {
 }
 
 const Orders = () => {
+  const navigate = useNavigate();
   const [orders] = useState<Order[]>([
     {
       id: "1",
@@ -145,7 +147,7 @@ const Orders = () => {
               <div className="flex-grow">
                 <p className="font-medium text-sm">{item.name}</p>
                 <p className="text-xs text-muted-foreground">
-                  Qty: {item.quantity} × ${item.price.toFixed(2)}
+                  Qty: {item.quantity} × ₹{item.price.toFixed(2)}
                 </p>
               </div>
             </div>
@@ -154,7 +156,7 @@ const Orders = () => {
 
         {/* Order Total */}
         <div className="flex items-center justify-between pt-3 border-t border-border">
-          <span className="font-semibold">Total: ${order.total.toFixed(2)}</span>
+          <span className="font-semibold">Total: ₹{order.total.toFixed(2)}</span>
           <div className="flex items-center space-x-2">
             <Button variant="outline" size="sm">
               <Eye className="w-4 h-4 mr-2" />
@@ -196,11 +198,21 @@ const Orders = () => {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">My Orders</h1>
-          <p className="text-muted-foreground">
-            Track and manage your orders
-          </p>
+        <div className="flex items-center gap-4 mb-8">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate(-1)}
+            className="hover:bg-secondary"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <div>
+            <h1 className="text-3xl font-bold mb-2">My Orders</h1>
+            <p className="text-muted-foreground">
+              Track and manage your orders
+            </p>
+          </div>
         </div>
 
         {/* Order Stats */}
@@ -225,7 +237,7 @@ const Orders = () => {
           </div>
           <div className="bg-gradient-card border border-border rounded-lg p-4 text-center">
             <div className="text-2xl font-bold text-primary mb-1">
-              ${orders.reduce((sum, order) => sum + order.total, 0).toFixed(2)}
+              ₹{orders.reduce((sum, order) => sum + order.total, 0).toFixed(2)}
             </div>
             <div className="text-sm text-muted-foreground">Total Spent</div>
           </div>
