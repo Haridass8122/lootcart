@@ -90,7 +90,7 @@ const Account = () => {
             variant="ghost"
             size="icon"
             onClick={() => navigate(-1)}
-            className="hover:bg-secondary"
+            className="hover:bg-primary/10 border border-primary/20 text-primary hover:text-primary"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>

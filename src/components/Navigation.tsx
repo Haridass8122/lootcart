@@ -31,6 +31,7 @@ import {
   Settings,
   HelpCircle,
   LogOut,
+  Home,
 } from "lucide-react";
 
 export const Navigation = () => {
@@ -75,6 +76,17 @@ export const Navigation = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
+            {/* Home Icon */}
+            <Link to="/">
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`${isActive("/") ? "text-primary bg-primary/10" : ""}`}
+              >
+                <Home className="w-5 h-5" />
+              </Button>
+            </Link>
+
             {isLoggedIn ? (
               <>
                 {/* Cart */}
