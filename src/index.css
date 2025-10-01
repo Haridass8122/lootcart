@@ -146,4 +146,31 @@ All colors MUST be HSL for consistency across light/dark modes.
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Performance optimizations to reduce forced reflows */
+  img {
+    content-visibility: auto;
+  }
+
+  /* Optimize transforms for GPU acceleration */
+  [class*="transform"],
+  [class*="translate"],
+  [class*="scale"],
+  [class*="rotate"] {
+    will-change: transform;
+  }
+
+  /* Contain layout for isolated components */
+  nav,
+  header,
+  aside,
+  section {
+    contain: layout style;
+  }
+
+  /* Optimize animations */
+  [class*="animate-"],
+  [class*="transition-"] {
+    will-change: auto;
+  }
 }
