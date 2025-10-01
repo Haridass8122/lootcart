@@ -124,7 +124,16 @@ const Home = () => {
             </div>
           </div>
 
-          <Button size="lg" className="bg-background text-primary hover:bg-background/90 shadow-elegant">
+          <Button 
+            size="lg" 
+            className="bg-background text-primary hover:bg-background/90 shadow-elegant"
+            onClick={() => {
+              document.getElementById('featured-products')?.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+              });
+            }}
+          >
             Start Shopping
             <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
@@ -194,7 +203,7 @@ const Home = () => {
       </section>
 
       {/* Featured Products */}
-      <section className="py-16 bg-secondary/30">
+      <section id="featured-products" className="py-16 bg-secondary/30">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-12">
             <div>
