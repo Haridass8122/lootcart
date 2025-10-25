@@ -26,33 +26,33 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md px-4 sm:px-0">
         {/* Logo */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6 sm:mb-8">
           <Link to="/" className="inline-flex items-center space-x-2">
-            <div className="w-10 h-10 bg-background rounded-lg flex items-center justify-center shadow-elegant">
-              <ShoppingCart className="w-6 h-6 text-primary" />
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-background rounded-lg flex items-center justify-center shadow-elegant">
+              <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
             </div>
-            <span className="text-2xl font-bold text-primary-foreground">
+            <span className="text-xl sm:text-2xl font-bold text-primary-foreground">
               Loot Cart
             </span>
           </Link>
         </div>
 
         <Card className="bg-background/95 backdrop-blur-sm shadow-elegant border-0">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl bg-gradient-primary bg-clip-text text-transparent">
+          <CardHeader className="text-center space-y-2 sm:space-y-3 p-4 sm:p-6">
+            <CardTitle className="text-xl sm:text-2xl bg-gradient-primary bg-clip-text text-transparent">
               Welcome Back
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sm sm:text-base">
               Sign in to your account to continue shopping
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+          <CardContent className="p-4 sm:p-6">
+            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
               {/* Email Field */}
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-sm">Email</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
@@ -61,7 +61,7 @@ const Login = () => {
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10"
+                    className="pl-10 h-10 sm:h-10 text-sm"
                     required
                   />
                 </div>
@@ -69,7 +69,7 @@ const Login = () => {
 
               {/* Password Field */}
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-sm">Password</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
@@ -78,7 +78,7 @@ const Login = () => {
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 pr-10"
+                    className="pl-10 pr-10 h-10 sm:h-10 text-sm"
                     required
                   />
                   <Button
@@ -98,7 +98,7 @@ const Login = () => {
               </div>
 
               {/* Remember Me & Forgot Password */}
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="remember"
@@ -107,14 +107,14 @@ const Login = () => {
                   />
                   <Label
                     htmlFor="remember"
-                    className="text-sm font-normal cursor-pointer"
+                    className="text-xs sm:text-sm font-normal cursor-pointer"
                   >
                     Remember me
                   </Label>
                 </div>
                 <Link
                   to="/forgot-password"
-                  className="text-sm text-primary hover:underline"
+                  className="text-xs sm:text-sm text-primary hover:underline"
                 >
                   Forgot password?
                 </Link>
@@ -123,7 +123,7 @@ const Login = () => {
               {/* Login Button */}
               <Button
                 type="submit"
-                className="w-full bg-gradient-primary shadow-button"
+                className="w-full bg-gradient-primary shadow-button h-10 sm:h-10 text-sm"
                 disabled={isLoading}
               >
                 {isLoading ? "Signing in..." : "Sign In"}
@@ -131,19 +131,19 @@ const Login = () => {
             </form>
 
             {/* Divider */}
-            <div className="mt-6">
+            <div className="mt-4 sm:mt-6">
               <Separator />
               <div className="relative">
-                <span className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-background px-2 text-sm text-muted-foreground">
+                <span className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-background px-2 text-xs sm:text-sm text-muted-foreground">
                   or
                 </span>
               </div>
             </div>
 
             {/* Social Login */}
-            <div className="mt-6 space-y-3">
-              <Button variant="outline" className="w-full">
-                <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
+            <div className="mt-4 sm:mt-6 space-y-2 sm:space-y-3">
+              <Button variant="outline" className="w-full h-10 text-xs sm:text-sm">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" viewBox="0 0 24 24">
                   <path
                     fill="currentColor"
                     d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -161,18 +161,18 @@ const Login = () => {
                     d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                   />
                 </svg>
-                Continue with Google
+                <span className="truncate">Continue with Google</span>
               </Button>
-              <Button variant="outline" className="w-full">
-                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+              <Button variant="outline" className="w-full h-10 text-xs sm:text-sm">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                 </svg>
-                Continue with Facebook
+                <span className="truncate">Continue with Facebook</span>
               </Button>
             </div>
 
             {/* Sign Up Link */}
-            <p className="mt-6 text-center text-sm text-muted-foreground">
+            <p className="mt-4 sm:mt-6 text-center text-xs sm:text-sm text-muted-foreground">
               Don't have an account?{" "}
               <Link to="/register" className="text-primary hover:underline font-medium">
                 Sign up

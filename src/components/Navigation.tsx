@@ -58,16 +58,16 @@ export const Navigation = () => {
           </Link>
 
           {/* Search Bar - Hidden on mobile */}
-          <div className="hidden md:flex flex-1 max-w-lg mx-8">
+          <div className="hidden lg:flex flex-1 max-w-lg mx-8">
             <div className="relative w-full">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary" />
               <Input
                 placeholder="Search products..."
-                className="pl-11 bg-secondary border border-primary/20 focus-visible:ring-primary focus-visible:ring-2 focus-visible:border-primary"
+                className="pl-11 pr-24 bg-secondary border border-primary/20 focus-visible:ring-primary focus-visible:ring-2 focus-visible:border-primary text-sm"
               />
               <Button
                 size="sm"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 h-7 px-3 bg-primary hover:bg-primary/90"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 h-7 px-3 text-xs bg-primary hover:bg-primary/90"
               >
                 Search
               </Button>
@@ -75,7 +75,7 @@ export const Navigation = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="hidden lg:flex items-center space-x-4 xl:space-x-6">
             {/* Home Icon */}
             <Link to="/">
               <Button
@@ -207,14 +207,14 @@ export const Navigation = () => {
           </div>
 
           {/* Mobile Menu */}
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" className="h-9 w-9">
                   <Menu className="w-5 h-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent>
+              <SheetContent className="w-[300px] sm:w-[400px]">
                 <SheetHeader>
                   <SheetTitle>Menu</SheetTitle>
                   <SheetDescription>Navigate through the app</SheetDescription>
@@ -225,11 +225,11 @@ export const Navigation = () => {
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary" />
                     <Input 
                       placeholder="Search products..." 
-                      className="pl-11 pr-20 border-primary/20 focus-visible:ring-primary" 
+                      className="pl-11 pr-20 border-primary/20 focus-visible:ring-primary text-sm" 
                     />
                     <Button
                       size="sm"
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2 h-7 px-3 bg-primary hover:bg-primary/90"
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 h-7 px-3 text-xs bg-primary hover:bg-primary/90"
                     >
                       Search
                     </Button>

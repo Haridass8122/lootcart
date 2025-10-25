@@ -96,28 +96,28 @@ const Cart = () => {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
               size="icon"
               onClick={() => navigate(-1)}
-              className="hover:bg-primary hover:text-primary-foreground border-primary/20 bg-primary/5"
+              className="hover:bg-primary hover:text-primary-foreground border-primary/20 bg-primary/5 h-9 w-9 sm:h-10 sm:w-10"
             >
-              <ArrowLeft className="h-5 w-5" />
+              <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => navigate("/")}
-              className="hover:bg-secondary text-primary"
+              className="hover:bg-secondary text-primary h-9 w-9 sm:h-10 sm:w-10"
             >
-              <Home className="h-5 w-5" />
+              <Home className="h-4 w-4 sm:h-5 sm:w-5" />
             </Button>
           </div>
           <div>
-            <h1 className="text-3xl font-bold mb-2">Shopping Cart</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2">Shopping Cart</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">
               {cartItems.length} {cartItems.length === 1 ? 'item' : 'items'} in your cart
             </p>
           </div>
@@ -128,31 +128,31 @@ const Cart = () => {
           <div className="lg:col-span-2 space-y-4">
             {cartItems.map((item) => (
               <Card key={item.id} className="bg-gradient-card border-0 shadow-card">
-                <CardContent className="p-6">
-                  <div className="flex items-center space-x-4">
+                <CardContent className="p-4 sm:p-6">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
                     {/* Product Image */}
                     <div className="flex-shrink-0">
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="w-20 h-20 object-cover rounded-lg"
+                        className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg"
                       />
                     </div>
 
                     {/* Product Details */}
-                    <div className="flex-grow">
-                      <div className="flex items-start justify-between">
-                        <div>
+                    <div className="flex-grow w-full">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1 min-w-0">
                           <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">
                             {item.category}
                           </p>
-                          <h3 className="font-semibold mb-2">{item.name}</h3>
-                          <div className="flex items-center space-x-2">
-                            <span className="font-bold text-primary">
+                          <h3 className="font-semibold text-sm sm:text-base mb-2 truncate">{item.name}</h3>
+                          <div className="flex items-center space-x-2 flex-wrap">
+                            <span className="font-bold text-primary text-base sm:text-lg">
                               ₹{item.price.toFixed(2)}
                             </span>
                             {item.originalPrice && (
-                              <span className="text-sm text-muted-foreground line-through">
+                              <span className="text-xs sm:text-sm text-muted-foreground line-through">
                                 ₹{item.originalPrice.toFixed(2)}
                               </span>
                             )}
@@ -164,38 +164,40 @@ const Cart = () => {
                           variant="ghost"
                           size="icon"
                           onClick={() => removeItem(item.id)}
-                          className="text-muted-foreground hover:text-destructive"
+                          className="text-muted-foreground hover:text-destructive h-8 w-8 sm:h-9 sm:w-9 flex-shrink-0"
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
                         </Button>
                       </div>
 
                       {/* Quantity Controls */}
-                      <div className="flex items-center space-x-2 mt-4">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-8 w-8"
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        >
-                          <Minus className="w-3 h-3" />
-                        </Button>
-                        <Input
-                          type="number"
-                          value={item.quantity}
-                          onChange={(e) => updateQuantity(item.id, parseInt(e.target.value))}
-                          className="w-16 h-8 text-center"
-                          min="1"
-                        />
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-8 w-8"
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        >
-                          <Plus className="w-3 h-3" />
-                        </Button>
-                        <span className="text-sm text-muted-foreground ml-4">
+                      <div className="flex items-center justify-between sm:justify-start space-x-2 mt-3 sm:mt-4">
+                        <div className="flex items-center space-x-2">
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-7 w-7 sm:h-8 sm:w-8"
+                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          >
+                            <Minus className="w-3 h-3" />
+                          </Button>
+                          <Input
+                            type="number"
+                            value={item.quantity}
+                            onChange={(e) => updateQuantity(item.id, parseInt(e.target.value))}
+                            className="w-12 sm:w-16 h-7 sm:h-8 text-center text-sm"
+                            min="1"
+                          />
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-7 w-7 sm:h-8 sm:w-8"
+                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          >
+                            <Plus className="w-3 h-3" />
+                          </Button>
+                        </div>
+                        <span className="text-sm text-muted-foreground font-medium">
                           ₹{(item.price * item.quantity).toFixed(2)}
                         </span>
                       </div>
