@@ -35,8 +35,8 @@ const Home = () => {
     {
       id: "1",
       name: "Wireless Bluetooth Headphones",
-      price: 79.99,
-      originalPrice: 99.99,
+      price: 6499,
+      originalPrice: 8299,
       image: headphonesImage,
       rating: 4.5,
       reviews: 128,
@@ -47,7 +47,7 @@ const Home = () => {
     {
       id: "2",
       name: "Premium Coffee Maker",
-      price: 149.99,
+      price: 12499,
       image: coffeeMakerImage,
       rating: 4.8,
       reviews: 89,
@@ -56,8 +56,8 @@ const Home = () => {
     {
       id: "3",
       name: "Fitness Tracker Watch",
-      price: 199.99,
-      originalPrice: 249.99,
+      price: 16599,
+      originalPrice: 20749,
       image: fitnessWatchImage,
       rating: 4.3,
       reviews: 205,
@@ -68,7 +68,7 @@ const Home = () => {
     {
       id: "4",
       name: "Portable Phone Charger",
-      price: 29.99,
+      price: 2499,
       image: phoneChargerImage,
       rating: 4.6,
       reviews: 324,
@@ -93,7 +93,7 @@ const Home = () => {
         <div className="container mx-auto text-center relative z-10">
           <Badge variant="secondary" className="mb-3 sm:mb-4 text-xs sm:text-sm bg-background/20 backdrop-blur-sm text-primary-foreground border-0">
             <Gift className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-            Free shipping on orders over $50
+            Free shipping on orders over ₹4,000
           </Badge>
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-4 sm:mb-6 px-2">
             Welcome to{" "}
@@ -149,7 +149,7 @@ const Home = () => {
                 <Truck className="w-6 h-6 sm:w-8 sm:h-8 text-primary-foreground" />
               </div>
               <h3 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">Free Shipping</h3>
-              <p className="text-sm sm:text-base text-muted-foreground">Free shipping on all orders over $50</p>
+              <p className="text-sm sm:text-base text-muted-foreground">Free shipping on all orders over ₹4,000</p>
             </div>
             <div className="text-center p-4 sm:p-6">
               <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
@@ -210,7 +210,7 @@ const Home = () => {
               <h2 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2">Featured Products</h2>
               <p className="text-sm sm:text-base text-muted-foreground">Handpicked items just for you</p>
             </div>
-            <Button variant="outline" className="hidden md:flex text-sm">
+            <Button variant="outline" className="hidden md:flex text-sm" onClick={() => window.location.assign('/products')}>
               View All
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
@@ -223,7 +223,7 @@ const Home = () => {
           </div>
 
           <div className="text-center mt-6 sm:mt-8 md:hidden">
-            <Button variant="outline" className="text-sm">
+            <Button variant="outline" className="text-sm" onClick={() => window.location.assign('/products')}>
               View All Products
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
