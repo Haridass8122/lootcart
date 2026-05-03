@@ -93,7 +93,7 @@ const Home = () => {
         <div className="container mx-auto text-center relative z-10">
           <Badge variant="secondary" className="mb-3 sm:mb-4 text-xs sm:text-sm bg-background/20 backdrop-blur-sm text-primary-foreground border-0">
             <Gift className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-            Free shipping on orders over $50
+            Free shipping on orders over ₹4,000
           </Badge>
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-4 sm:mb-6 px-2">
             Welcome to{" "}
