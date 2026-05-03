@@ -35,8 +35,8 @@ const Home = () => {
     {
       id: "1",
       name: "Wireless Bluetooth Headphones",
-      price: 79.99,
-      originalPrice: 99.99,
+      price: 6499,
+      originalPrice: 8299,
       image: headphonesImage,
       rating: 4.5,
       reviews: 128,
@@ -47,7 +47,7 @@ const Home = () => {
     {
       id: "2",
       name: "Premium Coffee Maker",
-      price: 149.99,
+      price: 12499,
       image: coffeeMakerImage,
       rating: 4.8,
       reviews: 89,
@@ -56,8 +56,8 @@ const Home = () => {
     {
       id: "3",
       name: "Fitness Tracker Watch",
-      price: 199.99,
-      originalPrice: 249.99,
+      price: 16599,
+      originalPrice: 20749,
       image: fitnessWatchImage,
       rating: 4.3,
       reviews: 205,
@@ -68,7 +68,7 @@ const Home = () => {
     {
       id: "4",
       name: "Portable Phone Charger",
-      price: 29.99,
+      price: 2499,
       image: phoneChargerImage,
       rating: 4.6,
       reviews: 324,
