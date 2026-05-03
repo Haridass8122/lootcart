@@ -149,7 +149,7 @@ const Home = () => {
                 <Truck className="w-6 h-6 sm:w-8 sm:h-8 text-primary-foreground" />
               </div>
               <h3 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">Free Shipping</h3>
-              <p className="text-sm sm:text-base text-muted-foreground">Free shipping on all orders over $50</p>
+              <p className="text-sm sm:text-base text-muted-foreground">Free shipping on all orders over ₹4,000</p>
             </div>
             <div className="text-center p-4 sm:p-6">
               <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
@@ -210,7 +210,7 @@ const Home = () => {
               <h2 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2">Featured Products</h2>
               <p className="text-sm sm:text-base text-muted-foreground">Handpicked items just for you</p>
             </div>
-            <Button variant="outline" className="hidden md:flex text-sm">
+            <Button variant="outline" className="hidden md:flex text-sm" onClick={() => window.location.assign('/products')}>
               View All
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
@@ -223,7 +223,7 @@ const Home = () => {
           </div>
 
           <div className="text-center mt-6 sm:mt-8 md:hidden">
-            <Button variant="outline" className="text-sm">
+            <Button variant="outline" className="text-sm" onClick={() => window.location.assign('/products')}>
               View All Products
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
