@@ -1,261 +1,209 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { ProductCard } from "@/components/ProductCard";
+import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
+import { ProductCard } from "@/components/ProductCard";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { products } from "@/data/products";
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import { Search, ArrowRight, TrendingUp, Gift, Truck, Shield } from "lucide-react";
-
-// Import product images
+  ArrowRight, Sparkles, Truck, Shield, RotateCcw, Headphones,
+  TrendingUp, Award, Zap, Glasses,
+} from "lucide-react";
 import headphonesImage from "@/assets/headphones.jpg";
 import coffeeMakerImage from "@/assets/coffee-maker.jpg";
 import fitnessWatchImage from "@/assets/fitness-watch.jpg";
-import phoneChargerImage from "@/assets/phone-charger.jpg";
-
-// Import category images
 import electronicsCategory from "@/assets/category-electronics.jpg";
-import fashionCategory from "@/assets/category-fashion.jpg";
 import homeKitchenCategory from "@/assets/category-home-kitchen.jpg";
 import sportsFitnessCategory from "@/assets/category-sports-fitness.jpg";
-import booksCategory from "@/assets/category-books.jpg";
-import beautyCategory from "@/assets/category-beauty.jpg";
 
 const Home = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-
-  // Mock data for featured products
-  const featuredProducts = [
-    {
-      id: "1",
-      name: "Wireless Bluetooth Headphones",
-      price: 6499,
-      originalPrice: 8299,
-      image: headphonesImage,
-      rating: 4.5,
-      reviews: 128,
-      isOnSale: true,
-      salePercentage: 20,
-      category: "Electronics",
-    },
-    {
-      id: "2",
-      name: "Premium Coffee Maker",
-      price: 12499,
-      image: coffeeMakerImage,
-      rating: 4.8,
-      reviews: 89,
-      category: "Home & Kitchen",
-    },
-    {
-      id: "3",
-      name: "Fitness Tracker Watch",
-      price: 16599,
-      originalPrice: 20749,
-      image: fitnessWatchImage,
-      rating: 4.3,
-      reviews: 205,
-      isOnSale: true,
-      salePercentage: 20,
-      category: "Fitness",
-    },
-    {
-      id: "4",
-      name: "Portable Phone Charger",
-      price: 2499,
-      image: phoneChargerImage,
-      rating: 4.6,
-      reviews: 324,
-      category: "Electronics",
-    },
-  ];
-
-  const categories = [
-    { name: "Electronics", count: 1234, color: "bg-primary", image: electronicsCategory },
-    { name: "Fashion", count: 856, color: "bg-accent", image: fashionCategory },
-    { name: "Home & Kitchen", count: 642, color: "bg-success", image: homeKitchenCategory },
-    { name: "Sports & Fitness", count: 428, color: "bg-warning", image: sportsFitnessCategory },
-    { name: "Books", count: 291, color: "bg-info", image: booksCategory },
-    { name: "Beauty", count: 537, color: "bg-destructive", image: beautyCategory },
-  ];
+  const featured = products.slice(0, 4);
+  const trending = products.slice(4, 8);
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="relative bg-gradient-hero py-12 sm:py-16 md:py-20 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/api/placeholder/1920/800')] bg-cover bg-center opacity-10" />
-        <div className="container mx-auto text-center relative z-10">
-          <Badge variant="secondary" className="mb-3 sm:mb-4 text-xs sm:text-sm bg-background/20 backdrop-blur-sm text-primary-foreground border-0">
-            <Gift className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-            Free shipping on orders over ₹4,000
-          </Badge>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-4 sm:mb-6 px-2">
-            Welcome to{" "}
-            <span className="bg-background/20 px-3 sm:px-4 py-1 sm:py-2 rounded-lg sm:rounded-xl backdrop-blur-sm inline-block mt-2 sm:mt-0">
-              Loot Cart
-            </span>
-          </h1>
-          <p className="text-base sm:text-lg md:text-xl text-primary-foreground/90 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
-            Discover amazing products at unbeatable prices. Your next favorite item is just a click away.
-          </p>
-          
-          {/* Hero Search */}
-          <div className="max-w-md mx-auto mb-6 sm:mb-8 px-4">
-            <div className="relative">
-              <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
-              <Input
-                placeholder="Search for products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 sm:pl-12 pr-16 sm:pr-20 h-10 sm:h-12 text-sm sm:text-base bg-background/90 backdrop-blur-sm border-0 text-foreground"
+      {/* HERO — bento grid */}
+      <section className="relative overflow-hidden bg-gradient-hero">
+        <div className="container mx-auto px-4 py-10 md:py-16">
+          {/* Marquee strip */}
+          <div className="mb-8 overflow-hidden rounded-full border border-border/60 bg-secondary/40 py-2.5">
+            <div className="flex gap-12 marquee whitespace-nowrap text-xs uppercase tracking-[0.25em] text-muted-foreground">
+              {Array.from({ length: 2 }).flatMap((_, k) =>
+                ["Free shipping over ₹4,000", "✦", "30-day returns", "✦", "Luxury curated", "✦", "Premium support", "✦", "Earn loot points", "✦"].map((t, i) => (
+                  <span key={`${k}-${i}`} className="shrink-0">{t}</span>
+                )),
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-12 gap-3 md:gap-4 auto-rows-[minmax(140px,auto)]">
+            {/* Big hero card */}
+            <div className="col-span-12 lg:col-span-8 row-span-2 relative overflow-hidden rounded-3xl bg-gradient-card border border-border/60 shadow-elegant p-8 md:p-12 group">
+              <div className="absolute inset-0 grain pointer-events-none" />
+              <div className="absolute -right-20 -bottom-20 w-[420px] h-[420px] rounded-full bg-gradient-gold opacity-20 blur-3xl" />
+              <Badge className="bg-primary/10 text-primary border border-primary/30 hover:bg-primary/10">
+                <Sparkles className="w-3 h-3 mr-1.5" /> New season drop
+              </Badge>
+              <h1 className="mt-5 font-display text-4xl md:text-6xl lg:text-7xl font-bold leading-[0.95] tracking-tight">
+                Shop the <span className="text-gold">noir</span><br />
+                edition.
+              </h1>
+              <p className="mt-5 max-w-md text-muted-foreground">
+                A curated collection of premium electronics, lifestyle, and home goods — designed for those who notice the details.
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Link to="/products">
+                  <Button size="lg" className="bg-gradient-primary text-primary-foreground shadow-button h-12 px-6 rounded-full">
+                    Explore catalog <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+                <Link to="/product/1">
+                  <Button size="lg" variant="outline" className="h-12 px-6 rounded-full border-border">
+                    Featured item
+                  </Button>
+                </Link>
+              </div>
+              <img
+                src={headphonesImage}
+                alt="Featured product"
+                className="hidden md:block absolute -right-8 bottom-8 w-72 lg:w-96 rounded-2xl object-cover shadow-elegant rotate-6 animate-float-slow"
               />
-              <Button
-                className="absolute right-1 sm:right-2 top-1/2 transform -translate-y-1/2 h-7 sm:h-8 px-3 sm:px-4 text-xs sm:text-sm bg-gradient-primary shadow-button"
-                size="sm"
-              >
-                Search
-              </Button>
             </div>
-          </div>
 
-          <Button 
-            size="lg" 
-            className="bg-background text-primary hover:bg-background/90 shadow-elegant text-sm sm:text-base h-10 sm:h-11 px-6 sm:px-8"
-            onClick={() => {
-              document.getElementById('featured-products')?.scrollIntoView({ 
-                behavior: 'smooth',
-                block: 'start'
-              });
-            }}
-          >
-            Start Shopping
-            <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-          </Button>
-        </div>
-      </section>
+            {/* Stats card */}
+            <div className="col-span-6 lg:col-span-4 rounded-3xl bg-card border border-border/60 p-6 flex flex-col justify-between shadow-card">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-widest">
+                <TrendingUp className="w-3.5 h-3.5 text-primary" /> This week
+              </div>
+              <div>
+                <p className="font-display text-5xl md:text-6xl font-bold text-gold">10K+</p>
+                <p className="text-sm text-muted-foreground mt-1">Happy shoppers across India</p>
+              </div>
+              <div className="flex -space-x-2">
+                {[1,2,3,4].map((i) => (
+                  <div key={i} className="w-8 h-8 rounded-full bg-gradient-gold border-2 border-card" />
+                ))}
+                <div className="w-8 h-8 rounded-full bg-secondary border-2 border-card flex items-center justify-center text-[10px] font-semibold">+9k</div>
+              </div>
+            </div>
 
-      {/* Features Section */}
-      <section className="py-12 sm:py-16 bg-secondary/30">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
-            <div className="text-center p-4 sm:p-6">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                <Truck className="w-6 h-6 sm:w-8 sm:h-8 text-primary-foreground" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">Free Shipping</h3>
-              <p className="text-sm sm:text-base text-muted-foreground">Free shipping on all orders over ₹4,000</p>
+            {/* Badge card */}
+            <div className="col-span-6 lg:col-span-4 rounded-3xl bg-gradient-gold p-6 text-primary-foreground relative overflow-hidden shadow-button">
+              <Award className="absolute -right-4 -bottom-4 w-32 h-32 opacity-20" />
+              <p className="text-[10px] uppercase tracking-widest opacity-80">Reward unlocked</p>
+              <p className="font-display text-2xl font-bold mt-2">First Purchase</p>
+              <p className="text-sm opacity-90 mt-1">Earn 500 loot points on your first order.</p>
             </div>
-            <div className="text-center p-4 sm:p-6">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-primary-foreground" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">Secure Payment</h3>
-              <p className="text-sm sm:text-base text-muted-foreground">100% secure payment processing</p>
-            </div>
-            <div className="text-center p-4 sm:p-6 sm:col-span-2 md:col-span-1">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-primary-foreground" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">Best Prices</h3>
-              <p className="text-sm sm:text-base text-muted-foreground">Competitive prices on all products</p>
-            </div>
+
+            {/* Category — Electronics */}
+            <CategoryTile colSpan="col-span-6 lg:col-span-4" name="Electronics" img={electronicsCategory} count={1234} />
+            {/* Category — Home */}
+            <CategoryTile colSpan="col-span-6 lg:col-span-4" name="Home & Kitchen" img={homeKitchenCategory} count={642} />
+            {/* Category — Fitness */}
+            <CategoryTile colSpan="col-span-12 lg:col-span-4" name="Sports & Fitness" img={sportsFitnessCategory} count={428} />
           </div>
         </div>
       </section>
 
-      {/* Categories Section */}
-      <section className="py-12 sm:py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8 sm:mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Shop by Category</h2>
-            <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto px-4">
-              Explore our wide range of categories and find exactly what you're looking for
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
-            {categories.map((category, index) => (
-              <div
-                key={index}
-                className="group p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-xl bg-gradient-card border border-border hover:shadow-card transition-all duration-300 cursor-pointer hover:-translate-y-1"
-              >
-                <div className="relative w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mx-auto mb-2 sm:mb-3 md:mb-4 overflow-hidden rounded-lg">
-                  <img 
-                    src={category.image} 
-                    alt={category.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
+      {/* Features strip */}
+      <section className="border-y border-border/60 bg-secondary/20">
+        <div className="container mx-auto px-4 py-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {[
+              { icon: Truck, label: "Free shipping", sub: "Orders over ₹4,000" },
+              { icon: Shield, label: "Secure checkout", sub: "256-bit encryption" },
+              { icon: RotateCcw, label: "30-day returns", sub: "Hassle-free" },
+              { icon: Headphones, label: "24/7 support", sub: "Real humans" },
+            ].map((f) => (
+              <div key={f.label} className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center shrink-0">
+                  <f.icon className="w-5 h-5 text-primary" />
                 </div>
-                <h3 className="font-semibold text-xs sm:text-sm md:text-base text-center mb-0.5 sm:mb-1">{category.name}</h3>
-                <p className="text-xs sm:text-sm text-muted-foreground text-center">
-                  {category.count} items
-                </p>
+                <div>
+                  <p className="font-display font-semibold text-sm">{f.label}</p>
+                  <p className="text-xs text-muted-foreground">{f.sub}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Featured Products */}
-      <section id="featured-products" className="py-12 sm:py-16 bg-secondary/30">
+      {/* Featured products */}
+      <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 sm:mb-12 gap-4">
+          <div className="flex items-end justify-between mb-8">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2">Featured Products</h2>
-              <p className="text-sm sm:text-base text-muted-foreground">Handpicked items just for you</p>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-2">Curated picks</p>
+              <h2 className="font-display text-3xl md:text-4xl font-bold">Featured products</h2>
             </div>
-            <Button variant="outline" className="hidden md:flex text-sm" onClick={() => window.location.assign('/products')}>
-              View All
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+            <Link to="/products" className="hidden sm:flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">
+              View all <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} {...product} />
-            ))}
-          </div>
-
-          <div className="text-center mt-6 sm:mt-8 md:hidden">
-            <Button variant="outline" className="text-sm" onClick={() => window.location.assign('/products')}>
-              View All Products
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {featured.map((p) => <ProductCard key={p.id} {...p} />)}
           </div>
         </div>
       </section>
 
-      {/* Newsletter Section */}
-      <section className="py-12 sm:py-16 bg-gradient-hero">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-primary-foreground mb-3 sm:mb-4 px-4">
-            Stay Updated with Loot Cart
-          </h2>
-          <p className="text-sm sm:text-base text-primary-foreground/90 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
-            Subscribe to our newsletter and be the first to know about new products, sales, and exclusive offers.
-          </p>
-          
-          <div className="max-w-md mx-auto px-4">
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-2">
-              <Input
-                placeholder="Enter your email"
-                className="bg-background/90 backdrop-blur-sm border-0 text-foreground h-10 sm:h-10 text-sm sm:text-base"
-              />
-              <Button className="bg-background text-primary hover:bg-background/90 shadow-button h-10 sm:h-10 text-sm sm:text-base whitespace-nowrap">
-                Subscribe
+      {/* AR/VR placeholder */}
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-gradient-card p-8 md:p-12 grid md:grid-cols-2 gap-8 items-center shadow-card">
+            <div className="absolute inset-0 grain pointer-events-none" />
+            <div className="relative">
+              <Badge className="bg-primary/10 text-primary border border-primary/30 hover:bg-primary/10">
+                <Glasses className="w-3 h-3 mr-1.5" /> Coming soon
+              </Badge>
+              <h3 className="mt-4 font-display text-3xl md:text-4xl font-bold">Try before you buy — in AR.</h3>
+              <p className="mt-3 text-muted-foreground max-w-md">
+                Preview furniture in your living room and accessories on yourself with our upcoming AR experience.
+              </p>
+              <Button className="mt-6 bg-gradient-primary shadow-button rounded-full" size="lg">
+                Join the waitlist <Zap className="ml-2 h-4 w-4" />
               </Button>
             </div>
+            <div className="relative grid grid-cols-2 gap-4">
+              <img src={fitnessWatchImage} alt="" className="rounded-2xl aspect-square object-cover shadow-elegant" />
+              <img src={coffeeMakerImage} alt="" className="rounded-2xl aspect-square object-cover shadow-elegant mt-8" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Trending */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="flex items-end justify-between mb-8">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-2">Most wanted</p>
+              <h2 className="font-display text-3xl md:text-4xl font-bold">Trending now</h2>
+            </div>
+            <Link to="/products" className="hidden sm:flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">
+              View all <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {trending.map((p) => <ProductCard key={p.id} {...p} />)}
           </div>
         </div>
       </section>
     </Layout>
   );
 };
+
+const CategoryTile = ({ colSpan, name, img, count }: { colSpan: string; name: string; img: string; count: number }) => (
+  <Link
+    to="/products"
+    className={`${colSpan} relative overflow-hidden rounded-3xl bg-card border border-border/60 group shadow-card hover:shadow-elegant hover:-translate-y-1 transition-all`}
+  >
+    <img src={img} alt={name} className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-70 group-hover:scale-110 transition duration-500" />
+    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+    <div className="relative p-6 h-full flex flex-col justify-end min-h-[180px]">
+      <p className="font-display text-xl font-bold">{name}</p>
+      <p className="text-xs text-muted-foreground mt-1">{count.toLocaleString("en-IN")} items</p>
+    </div>
+  </Link>
+);
 
 export default Home;
