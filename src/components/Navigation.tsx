@@ -1,306 +1,198 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
+  Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger,
 } from "@/components/ui/sheet";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  ShoppingCart,
-  Heart,
-  User,
-  Search,
-  Menu,
-  Bell,
-  Package,
-  Settings,
-  HelpCircle,
-  LogOut,
-  Home,
+  ShoppingBag, Heart, User, Search, Menu, Bell, Package,
+  Settings, HelpCircle, LogOut, Sun, Moon, Sparkles, ChevronRight,
 } from "lucide-react";
+import { useTheme } from "@/hooks/use-theme";
+import { useCart } from "@/hooks/use-cart";
+import { products } from "@/data/products";
+import { cn } from "@/lib/utils";
+
+const navLinks = [
+  { to: "/", label: "Home" },
+  { to: "/products", label: "Shop" },
+  { to: "/wishlist", label: "Wishlist" },
+  { to: "/orders", label: "Orders" },
+];
 
 export const Navigation = () => {
   const location = useLocation();
-  const [cartItems] = useState(3);
-  const [wishlistItems] = useState(5);
-  const [notifications] = useState(2);
-  const [isLoggedIn] = useState(true);
+  const navigate = useNavigate();
+  const { theme, toggle } = useTheme();
+  const { count, openCart } = useCart();
+  const [query, setQuery] = useState("");
+  const [focused, setFocused] = useState(false);
+  const isActive = (p: string) => location.pathname === p;
 
-  const isActive = (path: string) => location.pathname === path;
+  const suggestions = query
+    ? products.filter((p) => p.name.toLowerCase().includes(query.toLowerCase())).slice(0, 5)
+    : [];
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
+    <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-16 gap-4">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <ShoppingCart className="w-5 h-5 text-primary-foreground" />
+          <Link to="/" className="flex items-center gap-2.5 shrink-0">
+            <div className="relative">
+              <div className="w-9 h-9 rounded-xl bg-gradient-gold flex items-center justify-center shadow-button">
+                <Sparkles className="w-4.5 h-4.5 text-primary-foreground" strokeWidth={2.5} />
+              </div>
+              <div className="absolute -inset-0.5 rounded-xl bg-gradient-gold opacity-30 blur-md -z-10" />
             </div>
-            <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              Loot Cart
+            <span className="font-display text-xl font-bold tracking-tight">
+              Loot<span className="text-gold">Cart</span>
             </span>
           </Link>
 
-          {/* Search Bar - Hidden on mobile */}
-          <div className="hidden lg:flex flex-1 max-w-lg mx-8">
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary" />
-              <Input
-                placeholder="Search products..."
-                className="pl-11 pr-24 bg-secondary border border-primary/20 focus-visible:ring-primary focus-visible:ring-2 focus-visible:border-primary text-sm"
-              />
-              <Button
-                size="sm"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 h-7 px-3 text-xs bg-primary hover:bg-primary/90"
+          {/* Desktop nav links */}
+          <nav className="hidden lg:flex items-center gap-1">
+            {navLinks.map((l) => (
+              <Link
+                key={l.to}
+                to={l.to}
+                className={cn(
+                  "px-3 py-2 rounded-full text-sm font-medium transition",
+                  isActive(l.to) ? "bg-secondary text-foreground" : "text-muted-foreground hover:text-foreground",
+                )}
               >
-                Search
-              </Button>
-            </div>
-          </div>
+                {l.label}
+              </Link>
+            ))}
+          </nav>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-4 xl:space-x-6">
-            {/* Home Icon */}
-            <Link to="/">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`${isActive("/") ? "text-primary bg-primary/10" : ""}`}
-              >
-                <Home className="w-5 h-5" />
-              </Button>
-            </Link>
-
-            {isLoggedIn ? (
-              <>
-                {/* Cart */}
-                <Link to="/cart">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className={`relative ${isActive("/cart") ? "text-primary" : ""}`}
+          {/* Search */}
+          <div className="hidden md:flex flex-1 max-w-md relative">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setTimeout(() => setFocused(false), 150)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") navigate(`/products?q=${encodeURIComponent(query)}`);
+              }}
+              placeholder="Search the catalog..."
+              className="pl-10 pr-4 h-10 rounded-full bg-secondary/60 border-border/60 focus-visible:ring-primary"
+            />
+            {focused && suggestions.length > 0 && (
+              <div className="absolute top-12 left-0 right-0 bg-popover border border-border rounded-xl shadow-elegant p-2 animate-fade-in z-50">
+                {suggestions.map((s) => (
+                  <button
+                    key={s.id}
+                    onClick={() => navigate(`/product/${s.id}`)}
+                    className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-secondary text-left"
                   >
-                    <ShoppingCart className="w-5 h-5" />
-                    {cartItems > 0 && (
-                      <Badge
-                        variant="destructive"
-                        className="absolute -top-2 -right-2 w-5 h-5 p-0 flex items-center justify-center text-xs"
-                      >
-                        {cartItems}
-                      </Badge>
-                    )}
-                  </Button>
-                </Link>
-
-                {/* Wishlist */}
-                <Link to="/wishlist">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className={`relative ${isActive("/wishlist") ? "text-primary" : ""}`}
-                  >
-                    <Heart className="w-5 h-5" />
-                    {wishlistItems > 0 && (
-                      <Badge
-                        variant="secondary"
-                        className="absolute -top-2 -right-2 w-5 h-5 p-0 flex items-center justify-center text-xs"
-                      >
-                        {wishlistItems}
-                      </Badge>
-                    )}
-                  </Button>
-                </Link>
-
-                {/* Notifications */}
-                <Link to="/notifications">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className={`relative ${isActive("/notifications") ? "text-primary" : ""}`}
-                  >
-                    <Bell className="w-5 h-5" />
-                    {notifications > 0 && (
-                      <Badge
-                        variant="destructive"
-                        className="absolute -top-2 -right-2 w-5 h-5 p-0 flex items-center justify-center text-xs"
-                      >
-                        {notifications}
-                      </Badge>
-                    )}
-                  </Button>
-                </Link>
-
-                {/* User Menu */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="relative">
-                      <User className="w-5 h-5" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56" align="end">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem asChild>
-                        <Link to="/account" className="cursor-pointer">
-                          <User className="mr-2 h-4 w-4" />
-                          <span>Profile</span>
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link to="/orders" className="cursor-pointer">
-                          <Package className="mr-2 h-4 w-4" />
-                          <span>My Orders</span>
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link to="/settings" className="cursor-pointer">
-                          <Settings className="mr-2 h-4 w-4" />
-                          <span>Settings</span>
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link to="/help" className="cursor-pointer">
-                          <HelpCircle className="mr-2 h-4 w-4" />
-                          <span>Help Center</span>
-                        </Link>
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <LogOut className="mr-2 h-4 w-4" />
-                      <span>Log out</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </>
-            ) : (
-              <div className="flex items-center space-x-2">
-                <Link to="/login">
-                  <Button variant="ghost" size="sm">
-                    Login
-                  </Button>
-                </Link>
-                <Link to="/register">
-                  <Button size="sm" className="bg-gradient-primary shadow-button">
-                    Sign Up
-                  </Button>
-                </Link>
+                    <img src={s.image} alt="" className="w-9 h-9 rounded-md object-cover" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate">{s.name}</p>
+                      <p className="text-xs text-muted-foreground">{s.category}</p>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                  </button>
+                ))}
               </div>
             )}
           </div>
 
-          {/* Mobile Menu */}
-          <div className="lg:hidden">
+          {/* Actions */}
+          <div className="flex items-center gap-1">
+            <Button variant="ghost" size="icon" onClick={toggle} className="rounded-full" aria-label="Toggle theme">
+              {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </Button>
+
+            <Link to="/notifications" className="hidden sm:block">
+              <Button variant="ghost" size="icon" className="rounded-full relative">
+                <Bell className="w-5 h-5" />
+                <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary" />
+              </Button>
+            </Link>
+
+            <Link to="/wishlist" className="hidden sm:block">
+              <Button variant="ghost" size="icon" className="rounded-full">
+                <Heart className="w-5 h-5" />
+              </Button>
+            </Link>
+
+            <Button variant="ghost" size="icon" onClick={openCart} className="rounded-full relative">
+              <ShoppingBag className="w-5 h-5" />
+              {count > 0 && (
+                <Badge className="absolute -top-1 -right-1 h-5 min-w-5 px-1 rounded-full bg-primary text-primary-foreground text-[10px]">
+                  {count}
+                </Badge>
+              )}
+            </Button>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="hidden sm:inline-flex rounded-full">
+                  <User className="w-5 h-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild><Link to="/account"><User className="mr-2 h-4 w-4" />Profile</Link></DropdownMenuItem>
+                <DropdownMenuItem asChild><Link to="/orders"><Package className="mr-2 h-4 w-4" />Orders</Link></DropdownMenuItem>
+                <DropdownMenuItem asChild><Link to="/wishlist"><Heart className="mr-2 h-4 w-4" />Wishlist</Link></DropdownMenuItem>
+                <DropdownMenuItem asChild><Link to="/settings"><Settings className="mr-2 h-4 w-4" />Settings</Link></DropdownMenuItem>
+                <DropdownMenuItem asChild><Link to="/help"><HelpCircle className="mr-2 h-4 w-4" />Help</Link></DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild><Link to="/login"><LogOut className="mr-2 h-4 w-4" />Sign out</Link></DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Mobile menu */}
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="sm" className="h-9 w-9">
+                <Button variant="ghost" size="icon" className="lg:hidden rounded-full">
                   <Menu className="w-5 h-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent className="w-[300px] sm:w-[400px]">
+              <SheetContent side="right" className="w-[300px]">
                 <SheetHeader>
-                  <SheetTitle>Menu</SheetTitle>
-                  <SheetDescription>Navigate through the app</SheetDescription>
+                  <SheetTitle className="font-display">Menu</SheetTitle>
                 </SheetHeader>
-                <div className="mt-6 space-y-4">
-                  {/* Mobile Search */}
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary" />
-                    <Input 
-                      placeholder="Search products..." 
-                      className="pl-11 pr-20 border-primary/20 focus-visible:ring-primary text-sm" 
-                    />
-                    <Button
-                      size="sm"
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2 h-7 px-3 text-xs bg-primary hover:bg-primary/90"
-                    >
-                      Search
-                    </Button>
-                  </div>
-
-                  {isLoggedIn ? (
-                    <div className="space-y-2">
-                      <Link to="/cart" className="flex items-center justify-between p-2 rounded-lg hover:bg-secondary">
-                        <div className="flex items-center space-x-3">
-                          <ShoppingCart className="w-5 h-5" />
-                          <span>Shopping Cart</span>
-                        </div>
-                        {cartItems > 0 && (
-                          <Badge variant="destructive">{cartItems}</Badge>
-                        )}
-                      </Link>
-                      <Link to="/wishlist" className="flex items-center justify-between p-2 rounded-lg hover:bg-secondary">
-                        <div className="flex items-center space-x-3">
-                          <Heart className="w-5 h-5" />
-                          <span>Wishlist</span>
-                        </div>
-                        {wishlistItems > 0 && (
-                          <Badge variant="secondary">{wishlistItems}</Badge>
-                        )}
-                      </Link>
-                      <Link to="/orders" className="flex items-center space-x-3 p-2 rounded-lg hover:bg-secondary">
-                        <Package className="w-5 h-5" />
-                        <span>My Orders</span>
-                      </Link>
-                      <Link to="/account" className="flex items-center space-x-3 p-2 rounded-lg hover:bg-secondary">
-                        <User className="w-5 h-5" />
-                        <span>My Account</span>
-                      </Link>
-                      <Link to="/notifications" className="flex items-center justify-between p-2 rounded-lg hover:bg-secondary">
-                        <div className="flex items-center space-x-3">
-                          <Bell className="w-5 h-5" />
-                          <span>Notifications</span>
-                        </div>
-                        {notifications > 0 && (
-                          <Badge variant="destructive">{notifications}</Badge>
-                        )}
-                      </Link>
-                      <Link to="/settings" className="flex items-center space-x-3 p-2 rounded-lg hover:bg-secondary">
-                        <Settings className="w-5 h-5" />
-                        <span>Settings</span>
-                      </Link>
-                      <Link to="/help" className="flex items-center space-x-3 p-2 rounded-lg hover:bg-secondary">
-                        <HelpCircle className="w-5 h-5" />
-                        <span>Help Center</span>
-                      </Link>
-                    </div>
-                  ) : (
-                    <div className="space-y-2">
-                      <Link to="/login">
-                        <Button variant="outline" className="w-full">
-                          Login
-                        </Button>
-                      </Link>
-                      <Link to="/register">
-                        <Button className="w-full bg-gradient-primary shadow-button">
-                          Sign Up
-                        </Button>
-                      </Link>
-                    </div>
-                  )}
+                <div className="mt-6 space-y-1">
+                  {navLinks.map((l) => (
+                    <Link key={l.to} to={l.to} className="block px-3 py-2.5 rounded-lg hover:bg-secondary">{l.label}</Link>
+                  ))}
+                  <div className="h-px bg-border my-2" />
+                  <Link to="/account" className="block px-3 py-2.5 rounded-lg hover:bg-secondary">Account</Link>
+                  <Link to="/settings" className="block px-3 py-2.5 rounded-lg hover:bg-secondary">Settings</Link>
+                  <Link to="/help" className="block px-3 py-2.5 rounded-lg hover:bg-secondary">Help</Link>
+                  <Link to="/login" className="block px-3 py-2.5 rounded-lg hover:bg-secondary">Sign in</Link>
                 </div>
               </SheetContent>
             </Sheet>
           </div>
         </div>
+
+        {/* Mobile search */}
+        <div className="md:hidden pb-3">
+          <div className="relative">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && navigate(`/products?q=${encodeURIComponent(query)}`)}
+              placeholder="Search..."
+              className="pl-10 h-10 rounded-full bg-secondary/60"
+            />
+          </div>
+        </div>
       </div>
-    </nav>
+    </header>
   );
 };

@@ -1,410 +1,138 @@
-import { useState } from "react";
+import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Layout } from "@/components/Layout";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { 
-  User, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  CreditCard, 
-  Shield, 
-  Camera,
-  Edit,
-  Plus,
-  Trash2,
-  ArrowLeft
-} from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Card } from "@/components/ui/card";
+import { useState } from "react";
+import { User, Award, Sparkles, Star, Crown, Gift, Edit3, Check } from "lucide-react";
+import { inr } from "@/hooks/use-cart";
+
+const badges = [
+  { icon: Sparkles, name: "First Purchase", desc: "Unlocked", earned: true },
+  { icon: Star, name: "Top Reviewer", desc: "5 reviews", earned: true },
+  { icon: Crown, name: "VIP Member", desc: "10 orders", earned: false },
+  { icon: Gift, name: "Gifter", desc: "Send 3 gifts", earned: false },
+];
 
 const Account = () => {
-  const navigate = useNavigate();
-  const [isEditing, setIsEditing] = useState(false);
-  const [userInfo, setUserInfo] = useState({
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-    phone: "+1 (555) 123-4567",
-    dateOfBirth: "1990-01-15",
-    avatar: "/api/placeholder/100/100",
-  });
-
-  const [addresses] = useState([
-    {
-      id: "1",
-      type: "Home",
-      street: "123 Main Street",
-      city: "New York",
-      state: "NY",
-      zipCode: "10001",
-      country: "United States",
-      isDefault: true,
-    },
-    {
-      id: "2",
-      type: "Work",
-      street: "456 Business Ave",
-      city: "New York",
-      state: "NY",
-      zipCode: "10002",
-      country: "United States",
-      isDefault: false,
-    },
-  ]);
-
-  const [paymentMethods] = useState([
-    {
-      id: "1",
-      type: "Visa",
-      last4: "4242",
-      expiryMonth: "12",
-      expiryYear: "2025",
-      isDefault: true,
-    },
-    {
-      id: "2",
-      type: "Mastercard",
-      last4: "8888",
-      expiryMonth: "06",
-      expiryYear: "2026",
-      isDefault: false,
-    },
-  ]);
-
-  const handleSaveProfile = () => {
-    setIsEditing(false);
-    // Handle save logic here
-  };
+  const [editing, setEditing] = useState(false);
+  const [profile, setProfile] = useState({ name: "Aarav Kumar", email: "aarav@example.com", phone: "9876543210" });
+  const points = 1480;
+  const nextTier = 2500;
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center gap-4 mb-8">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate(-1)}
-            className="hover:bg-primary/10 border border-primary/20 text-primary hover:text-primary"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <div>
-            <h1 className="text-3xl font-bold mb-2">My Account</h1>
-            <p className="text-muted-foreground">
-              Manage your account settings and preferences
-            </p>
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        {/* Header */}
+        <div className="rounded-3xl bg-gradient-card border border-border/60 p-6 md:p-8 shadow-card mb-8 grid md:grid-cols-3 gap-6 items-center">
+          <div className="flex items-center gap-4 md:col-span-2">
+            <div className="w-20 h-20 rounded-2xl bg-gradient-gold flex items-center justify-center shadow-button">
+              <User className="w-10 h-10 text-primary-foreground" />
+            </div>
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-1">Member since 2024</p>
+              <h1 className="font-display text-2xl md:text-3xl font-bold">{profile.name}</h1>
+              <p className="text-sm text-muted-foreground">{profile.email}</p>
+            </div>
+          </div>
+          <div className="rounded-2xl bg-card border border-border p-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs text-muted-foreground uppercase tracking-widest">Loot points</span>
+              <Award className="w-4 h-4 text-primary" />
+            </div>
+            <p className="font-display text-3xl font-bold text-gold">{points.toLocaleString("en-IN")}</p>
+            <div className="mt-3 h-1.5 rounded-full bg-secondary overflow-hidden">
+              <div className="h-full bg-gradient-primary" style={{ width: `${(points / nextTier) * 100}%` }} />
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-1.5">{nextTier - points} points to Gold tier</p>
           </div>
         </div>
 
-        <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-6">
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="addresses">Addresses</TabsTrigger>
-            <TabsTrigger value="payments">Payment Methods</TabsTrigger>
-            <TabsTrigger value="security">Security</TabsTrigger>
-          </TabsList>
+        <div className="grid lg:grid-cols-3 gap-6">
+          {/* Profile */}
+          <Card className="lg:col-span-2 p-6 bg-card border-border/60">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="font-display font-semibold text-lg">Profile</h2>
+              <Button variant="ghost" size="sm" onClick={() => setEditing(!editing)}>
+                {editing ? <><Check className="w-3.5 h-3.5 mr-1" />Save</> : <><Edit3 className="w-3.5 h-3.5 mr-1" />Edit</>}
+              </Button>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Field label="Full name" value={profile.name} onChange={(v) => setProfile({ ...profile, name: v })} disabled={!editing} />
+              <Field label="Email" value={profile.email} onChange={(v) => setProfile({ ...profile, email: v })} disabled={!editing} />
+              <Field label="Phone" value={profile.phone} onChange={(v) => setProfile({ ...profile, phone: v })} disabled={!editing} />
+              <Field label="Country" value="India" onChange={() => {}} disabled />
+            </div>
+          </Card>
 
-          {/* Profile Tab */}
-          <TabsContent value="profile">
-            <Card className="bg-gradient-card border-0 shadow-card">
-              <CardHeader>
-                <div className="flex items-center justify-between">
+          {/* Coupons */}
+          <Card className="p-6 bg-card border-border/60">
+            <h2 className="font-display font-semibold text-lg mb-4">Coupons</h2>
+            <div className="space-y-3">
+              {[
+                { code: "LUXE10", desc: "10% off everything", color: "primary" },
+                { code: "FREESHIP", desc: "Free shipping", color: "success" },
+              ].map((c) => (
+                <div key={c.code} className="rounded-xl border border-dashed border-primary/40 bg-primary/5 p-3 flex items-center justify-between">
                   <div>
-                    <CardTitle>Personal Information</CardTitle>
-                    <CardDescription>
-                      Update your personal details and profile picture
-                    </CardDescription>
+                    <p className="font-display font-bold text-primary">{c.code}</p>
+                    <p className="text-xs text-muted-foreground">{c.desc}</p>
                   </div>
-                  {!isEditing ? (
-                    <Button 
-                      variant="outline" 
-                      onClick={() => setIsEditing(true)}
-                    >
-                      <Edit className="w-4 h-4 mr-2" />
-                      Edit Profile
-                    </Button>
-                  ) : (
-                    <div className="flex space-x-2">
-                      <Button 
-                        variant="outline" 
-                        onClick={() => setIsEditing(false)}
-                      >
-                        Cancel
-                      </Button>
-                      <Button 
-                        onClick={handleSaveProfile}
-                        className="bg-gradient-primary shadow-button"
-                      >
-                        Save Changes
-                      </Button>
-                    </div>
-                  )}
+                  <Badge variant="outline" className="border-primary/40">Apply</Badge>
                 </div>
-              </CardHeader>
-              <CardContent>
-                {/* Avatar Section */}
-                <div className="flex items-center space-x-6 mb-6">
-                  <div className="relative">
-                    <Avatar className="w-24 h-24">
-                      <AvatarImage src={userInfo.avatar} alt="Profile picture" />
-                      <AvatarFallback>
-                        {userInfo.firstName[0]}{userInfo.lastName[0]}
-                      </AvatarFallback>
-                    </Avatar>
-                    {isEditing && (
-                      <Button
-                        size="icon"
-                        variant="secondary"
-                        className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full"
-                      >
-                        <Camera className="w-4 h-4" />
-                      </Button>
-                    )}
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold">
-                      {userInfo.firstName} {userInfo.lastName}
-                    </h3>
-                    <p className="text-muted-foreground">{userInfo.email}</p>
-                    <Badge variant="secondary" className="mt-1">
-                      Premium Member
-                    </Badge>
-                  </div>
-                </div>
-
-                {/* Profile Form */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="firstName">First Name</Label>
-                    <div className="relative">
-                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                      <Input
-                        id="firstName"
-                        value={userInfo.firstName}
-                        onChange={(e) => setUserInfo(prev => ({...prev, firstName: e.target.value}))}
-                        className="pl-10"
-                        disabled={!isEditing}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="lastName">Last Name</Label>
-                    <Input
-                      id="lastName"
-                      value={userInfo.lastName}
-                      onChange={(e) => setUserInfo(prev => ({...prev, lastName: e.target.value}))}
-                      disabled={!isEditing}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                      <Input
-                        id="email"
-                        type="email"
-                        value={userInfo.email}
-                        onChange={(e) => setUserInfo(prev => ({...prev, email: e.target.value}))}
-                        className="pl-10"
-                        disabled={!isEditing}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number</Label>
-                    <div className="relative">
-                      <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                      <Input
-                        id="phone"
-                        value={userInfo.phone}
-                        onChange={(e) => setUserInfo(prev => ({...prev, phone: e.target.value}))}
-                        className="pl-10"
-                        disabled={!isEditing}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2 md:col-span-2">
-                    <Label htmlFor="dateOfBirth">Date of Birth</Label>
-                    <Input
-                      id="dateOfBirth"
-                      type="date"
-                      value={userInfo.dateOfBirth}
-                      onChange={(e) => setUserInfo(prev => ({...prev, dateOfBirth: e.target.value}))}
-                      disabled={!isEditing}
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Addresses Tab */}
-          <TabsContent value="addresses">
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-xl font-semibold">Saved Addresses</h2>
-                  <p className="text-muted-foreground">Manage your delivery addresses</p>
-                </div>
-                <Button className="bg-gradient-primary shadow-button">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Address
-                </Button>
-              </div>
-
-              {addresses.map((address) => (
-                <Card key={address.id} className="bg-gradient-card border-0 shadow-card">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start space-x-3">
-                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                          <MapPin className="w-5 h-5 text-primary" />
-                        </div>
-                        <div>
-                          <div className="flex items-center space-x-2 mb-2">
-                            <h3 className="font-semibold">{address.type}</h3>
-                            {address.isDefault && (
-                              <Badge variant="secondary">Default</Badge>
-                            )}
-                          </div>
-                          <p className="text-muted-foreground text-sm">
-                            {address.street}<br />
-                            {address.city}, {address.state} {address.zipCode}<br />
-                            {address.country}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Button variant="outline" size="sm">
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
               ))}
             </div>
-          </TabsContent>
+          </Card>
 
-          {/* Payment Methods Tab */}
-          <TabsContent value="payments">
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-xl font-semibold">Payment Methods</h2>
-                  <p className="text-muted-foreground">Manage your saved payment methods</p>
-                </div>
-                <Button className="bg-gradient-primary shadow-button">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Payment Method
-                </Button>
+          {/* Badges */}
+          <Card className="lg:col-span-3 p-6 bg-card border-border/60">
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <h2 className="font-display font-semibold text-lg">Achievements</h2>
+                <p className="text-sm text-muted-foreground">Earn badges as you shop and engage.</p>
               </div>
-
-              {paymentMethods.map((payment) => (
-                <Card key={payment.id} className="bg-gradient-card border-0 shadow-card">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start space-x-3">
-                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                          <CreditCard className="w-5 h-5 text-primary" />
-                        </div>
-                        <div>
-                          <div className="flex items-center space-x-2 mb-2">
-                            <h3 className="font-semibold">
-                              {payment.type} ending in {payment.last4}
-                            </h3>
-                            {payment.isDefault && (
-                              <Badge variant="secondary">Default</Badge>
-                            )}
-                          </div>
-                          <p className="text-muted-foreground text-sm">
-                            Expires {payment.expiryMonth}/{payment.expiryYear}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Button variant="outline" size="sm">
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {badges.map((b) => (
+                <div
+                  key={b.name}
+                  className={`rounded-2xl p-5 text-center border ${b.earned ? "border-primary/40 bg-gradient-card shadow-card" : "border-dashed border-border opacity-60"}`}
+                >
+                  <div className={`w-12 h-12 rounded-full mx-auto mb-3 flex items-center justify-center ${b.earned ? "bg-gradient-gold shadow-button" : "bg-secondary"}`}>
+                    <b.icon className={`w-5 h-5 ${b.earned ? "text-primary-foreground" : "text-muted-foreground"}`} />
+                  </div>
+                  <p className="font-display font-semibold text-sm">{b.name}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{b.desc}</p>
+                </div>
               ))}
             </div>
-          </TabsContent>
+          </Card>
 
-          {/* Security Tab */}
-          <TabsContent value="security">
-            <div className="space-y-6">
-              <Card className="bg-gradient-card border-0 shadow-card">
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Shield className="w-5 h-5" />
-                    <span>Security Settings</span>
-                  </CardTitle>
-                  <CardDescription>
-                    Manage your password and security preferences
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
-                    <div>
-                      <h3 className="font-semibold">Password</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Last changed 3 months ago
-                      </p>
-                    </div>
-                    <Button variant="outline">Change Password</Button>
-                  </div>
-
-                  <Separator />
-
-                  <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
-                    <div>
-                      <h3 className="font-semibold">Two-Factor Authentication</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Add an extra layer of security to your account
-                      </p>
-                    </div>
-                    <Button variant="outline">Enable 2FA</Button>
-                  </div>
-
-                  <Separator />
-
-                  <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
-                    <div>
-                      <h3 className="font-semibold">Login Activity</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Review your recent login activity
-                      </p>
-                    </div>
-                    <Button variant="outline">View Activity</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-        </Tabs>
+          {/* Spend summary */}
+          <Card className="lg:col-span-3 p-6 bg-card border-border/60 grid sm:grid-cols-3 gap-4">
+            <Stat label="Lifetime spent" value={inr(48230)} />
+            <Stat label="Orders placed" value="14" />
+            <Stat label="Items saved" value="32" />
+          </Card>
+        </div>
       </div>
     </Layout>
   );
 };
+
+const Field = ({ label, value, onChange, disabled }: { label: string; value: string; onChange: (v: string) => void; disabled?: boolean }) => (
+  <div>
+    <Label className="text-xs text-muted-foreground mb-1.5 block">{label}</Label>
+    <Input value={value} onChange={(e) => onChange(e.target.value)} disabled={disabled} className="h-11 rounded-xl bg-secondary/40 disabled:opacity-100" />
+  </div>
+);
+
+const Stat = ({ label, value }: { label: string; value: string }) => (
+  <div className="rounded-2xl border border-border/60 bg-secondary/30 p-4">
+    <p className="text-xs uppercase tracking-widest text-muted-foreground">{label}</p>
+    <p className="font-display text-2xl font-bold text-gold mt-1">{value}</p>
+  </div>
+);
 
 export default Account;
