@@ -1,160 +1,96 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Heart, ShoppingCart, Star, Eye } from "lucide-react";
+import { Heart, ShoppingCart, Star, Eye, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useCart, inr } from "@/hooks/use-cart";
+import type { Product } from "@/data/products";
 
-interface ProductCardProps {
-  id: string;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  image: string;
-  rating: number;
-  reviews: number;
-  isOnSale?: boolean;
-  salePercentage?: number;
-  isFavorite?: boolean;
-  category: string;
+interface Props extends Product {
+  variant?: "default" | "compact";
 }
 
-export const ProductCard = ({
-  id,
-  name,
-  price,
-  originalPrice,
-  image,
-  rating,
-  reviews,
-  isOnSale = false,
-  salePercentage,
-  isFavorite = false,
-  category,
-}: ProductCardProps) => {
-  const [favorite, setFavorite] = useState(isFavorite);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleAddToCart = async () => {
-    setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-  };
-
-  const toggleFavorite = () => {
-    setFavorite(!favorite);
-  };
+export const ProductCard = ({ variant = "default", ...p }: Props) => {
+  const [favorite, setFavorite] = useState(false);
+  const { add } = useCart();
 
   return (
-    <Card className="group relative overflow-hidden border-0 bg-gradient-card shadow-card hover:shadow-elegant transition-all duration-300 hover:-translate-y-1">
-      {/* Sale Badge */}
-      {isOnSale && salePercentage && (
-        <Badge 
-          variant="destructive" 
-          className="absolute top-2 left-2 sm:top-3 sm:left-3 z-10 font-semibold text-xs"
-        >
-          -{salePercentage}%
+    <article
+      className={cn(
+        "group relative overflow-hidden rounded-2xl border border-border/60 bg-gradient-card shadow-card transition-all duration-300 hover:shadow-elegant hover:-translate-y-1 hover:border-primary/40",
+      )}
+    >
+      {/* Sale badge */}
+      {p.isOnSale && p.salePercentage && (
+        <Badge className="absolute top-3 left-3 z-10 bg-primary text-primary-foreground font-semibold">
+          −{p.salePercentage}%
         </Badge>
       )}
 
-      {/* Favorite Button */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10 h-7 w-7 sm:h-8 sm:w-8 bg-background/80 backdrop-blur-sm hover:bg-background"
-        onClick={toggleFavorite}
+      {/* Favorite */}
+      <button
+        onClick={() => setFavorite(!favorite)}
+        aria-label="Toggle wishlist"
+        className="absolute top-3 right-3 z-10 h-9 w-9 rounded-full bg-background/70 backdrop-blur-sm border border-border/50 flex items-center justify-center transition hover:bg-background hover:border-primary/40"
       >
-        <Heart
-          className={cn(
-            "h-3 w-3 sm:h-4 sm:w-4 transition-colors",
-            favorite ? "fill-destructive text-destructive" : "text-muted-foreground"
-          )}
-        />
-      </Button>
+        <Heart className={cn("h-4 w-4 transition-colors", favorite ? "fill-primary text-primary" : "text-muted-foreground")} />
+      </button>
 
-      {/* Product Image */}
-      <div className="relative overflow-hidden bg-secondary">
-        <img
-          src={image}
-          alt={name}
-          className="h-40 sm:h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-        />
-        
-        {/* Hover Overlay - Hidden on mobile */}
-        <div className="hidden sm:flex absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 items-center justify-center">
-          <Button
-            variant="secondary"
-            size="sm"
-            className="bg-background/90 backdrop-blur-sm text-xs"
-          >
-            <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
-            Quick View
+      {/* Image */}
+      <Link to={`/product/${p.id}`} className="block relative overflow-hidden bg-secondary">
+        <div className="aspect-square">
+          <img
+            src={p.image}
+            alt={p.name}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+        </div>
+        <div className="hidden sm:flex absolute inset-0 items-end justify-center pb-4 bg-gradient-to-t from-background/80 via-background/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+          <Button size="sm" variant="secondary" className="backdrop-blur-md text-xs">
+            <Eye className="h-3.5 w-3.5 mr-1.5" /> Quick view
           </Button>
         </div>
-      </div>
+      </Link>
 
-      <CardContent className="p-3 sm:p-4">
-        {/* Category */}
-        <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">
-          {category}
-        </p>
+      <div className="p-4">
+        <p className="text-[10px] uppercase tracking-[0.18em] text-primary/80 mb-1">{p.category}</p>
+        <Link to={`/product/${p.id}`}>
+          <h3 className="font-display font-semibold text-sm sm:text-base line-clamp-2 leading-tight min-h-[2.5rem] hover:text-primary transition-colors">
+            {p.name}
+          </h3>
+        </Link>
 
-        {/* Product Name */}
-        <h3 className="font-semibold text-xs sm:text-sm mb-2 line-clamp-2 leading-tight min-h-[2.5rem] sm:min-h-[2.8rem]">
-          {name}
-        </h3>
-
-        {/* Rating */}
-        <div className="flex items-center space-x-1 mb-2">
-          <div className="flex items-center">
+        <div className="flex items-center gap-1.5 mt-2">
+          <div className="flex">
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
-                className={cn(
-                  "h-2.5 w-2.5 sm:h-3 sm:w-3",
-                  i < Math.floor(rating)
-                    ? "fill-primary text-primary"
-                    : "text-muted-foreground"
-                )}
+                className={cn("h-3 w-3", i < Math.floor(p.rating) ? "fill-primary text-primary" : "text-muted-foreground/40")}
               />
             ))}
           </div>
-          <span className="text-xs text-muted-foreground">
-            ({reviews})
-          </span>
+          <span className="text-xs text-muted-foreground">({p.reviews})</span>
         </div>
 
-        {/* Price */}
-        <div className="flex items-center space-x-2 flex-wrap">
-          <span className="font-bold text-base sm:text-lg text-primary">
-            ₹{price.toLocaleString("en-IN")}
-          </span>
-          {originalPrice && (
-            <span className="text-xs sm:text-sm text-muted-foreground line-through">
-              ₹{originalPrice.toLocaleString("en-IN")}
-            </span>
-          )}
+        <div className="flex items-end justify-between mt-3 gap-2">
+          <div className="flex items-baseline gap-2 flex-wrap">
+            <span className="font-display font-bold text-lg text-foreground">{inr(p.price)}</span>
+            {p.originalPrice && (
+              <span className="text-xs text-muted-foreground line-through">{inr(p.originalPrice)}</span>
+            )}
+          </div>
+          <Button
+            size="icon"
+            onClick={() => add({ id: p.id, name: p.name, price: p.price, originalPrice: p.originalPrice, image: p.image, category: p.category })}
+            className="h-9 w-9 rounded-full bg-gradient-primary text-primary-foreground shadow-button hover:scale-110 transition-transform"
+            aria-label="Add to cart"
+          >
+            <Plus className="h-4 w-4" />
+          </Button>
         </div>
-      </CardContent>
-
-      <CardFooter className="p-3 sm:p-4 pt-0">
-        <Button
-          onClick={handleAddToCart}
-          disabled={isLoading}
-          className="w-full bg-gradient-primary shadow-button hover:shadow-primary text-xs sm:text-sm h-8 sm:h-10"
-        >
-          {isLoading ? (
-            "Adding..."
-          ) : (
-            <>
-              <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-              Add to Cart
-            </>
-          )}
-        </Button>
-      </CardFooter>
-    </Card>
+      </div>
+    </article>
   );
 };
