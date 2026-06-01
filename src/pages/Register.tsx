@@ -1,107 +1,63 @@
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { User, Phone, Lock, ArrowLeft, ShoppingCart } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Sparkles, User, Mail, Lock, Phone, ArrowRight, ChevronLeft } from "lucide-react";
 
 const Register = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: "", mobile: "", password: "" });
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 1000);
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4 relative">
-      {/* Back button */}
-      <button
-        onClick={() => navigate(-1)}
-        aria-label="Back"
-        className="absolute top-4 left-4 sm:top-6 sm:left-6 w-9 h-9 rounded-full bg-background/90 flex items-center justify-center shadow-card text-primary hover:bg-background transition"
-      >
-        <ArrowLeft className="w-5 h-5" />
-      </button>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-hero p-4 relative overflow-hidden">
+      <div className="absolute -top-32 -right-32 w-96 h-96 bg-gradient-gold opacity-20 rounded-full blur-3xl" />
+      <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-gradient-gold opacity-10 rounded-full blur-3xl" />
 
-      <div className="w-full max-w-sm">
-        {/* Avatar Circle */}
-        <div className="flex flex-col items-center mb-8">
-          <div className="w-28 h-28 sm:w-32 sm:h-32 bg-background rounded-full flex items-center justify-center shadow-elegant mb-3">
-            <ShoppingCart className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
+      <div className="relative w-full max-w-md">
+        <button onClick={() => navigate(-1)} className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-4">
+          <ChevronLeft className="w-4 h-4 mr-1" /> Back
+        </button>
+        <Link to="/" className="flex items-center justify-center gap-2.5 mb-6">
+          <div className="w-10 h-10 rounded-xl bg-gradient-gold flex items-center justify-center shadow-button">
+            <Sparkles className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} />
           </div>
-          <p className="text-primary-foreground text-sm">creating a account</p>
-        </div>
+          <span className="font-display text-2xl font-bold">Loot<span className="text-gold">Cart</span></span>
+        </Link>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="relative">
-            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input
-              name="name"
-              placeholder="Name"
-              value={form.name}
-              onChange={handleChange}
-              className="pl-11 h-11 rounded-full bg-background border-0 text-sm shadow-card"
-              required
-            />
-          </div>
+        <div className="rounded-3xl border border-border/60 bg-card/80 backdrop-blur-xl p-8 shadow-elegant">
+          <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-2 text-center">Get started</p>
+          <h1 className="font-display text-2xl font-bold text-center mb-1">Create your account</h1>
+          <p className="text-sm text-muted-foreground text-center mb-6">Earn 500 loot points on signup.</p>
 
-          <div className="relative">
-            <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input
-              name="mobile"
-              type="tel"
-              placeholder="mobile num"
-              value={form.mobile}
-              onChange={handleChange}
-              className="pl-11 h-11 rounded-full bg-background border-0 text-sm shadow-card"
-              required
-            />
-          </div>
+          <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); navigate("/"); }}>
+            <IconField icon={User} placeholder="Full name" />
+            <IconField icon={Mail} placeholder="Email" type="email" />
+            <IconField icon={Phone} placeholder="Phone" type="tel" />
+            <IconField icon={Lock} placeholder="Password" type="password" />
 
-          <div className="relative">
-            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input
-              name="password"
-              type="password"
-              placeholder="password"
-              value={form.password}
-              onChange={handleChange}
-              className="pl-11 h-11 rounded-full bg-background border-0 text-sm shadow-card"
-              required
-            />
-          </div>
-
-          <div className="flex justify-center pt-2">
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="h-10 px-10 rounded-full bg-background text-primary hover:bg-background/90 shadow-button font-medium"
-            >
-              {isLoading ? "..." : "sing in"}
+            <Button type="submit" className="w-full h-11 bg-gradient-primary shadow-button rounded-full">
+              Create account <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
-          </div>
-        </form>
+          </form>
 
-        <p className="text-center text-sm text-primary-foreground mt-10">
-          well come to our world
-        </p>
-
-        <p className="text-center text-xs text-primary-foreground/80 mt-4">
-          Already have an account?{" "}
-          <Link to="/login" className="font-semibold underline">
-            log in
-          </Link>
-        </p>
+          <p className="text-xs text-muted-foreground text-center mt-4">
+            By signing up you agree to our Terms and Privacy Policy.
+          </p>
+          <p className="text-sm text-center text-muted-foreground mt-4">
+            Already a member? <Link to="/login" className="text-primary font-medium hover:underline">Sign in</Link>
+          </p>
+        </div>
       </div>
     </div>
   );
 };
+
+const IconField = ({ icon: Icon, ...props }: { icon: typeof User } & React.InputHTMLAttributes<HTMLInputElement>) => (
+  <div>
+    <Label className="sr-only">{props.placeholder}</Label>
+    <div className="relative">
+      <Icon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+      <Input {...props} className="pl-10 h-11 rounded-xl bg-secondary/40" required />
+    </div>
+  </div>
+);
 
 export default Register;

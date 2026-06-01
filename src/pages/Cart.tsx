@@ -1,92 +1,36 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { Layout } from "@/components/Layout";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, ArrowLeft, Home } from "lucide-react";
+import { useCart, inr } from "@/hooks/use-cart";
 import { useNavigate } from "react-router-dom";
-
-import headphonesImage from "@/assets/headphones.jpg";
-import coffeeMakerImage from "@/assets/coffee-maker.jpg";
-
-interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  image: string;
-  quantity: number;
-  category: string;
-}
-
-const inr = (n: number) => `₹${n.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`;
+import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, ChevronLeft, Truck, Tag } from "lucide-react";
+import { useState } from "react";
 
 const Cart = () => {
+  const { items, update, remove, subtotal } = useCart();
   const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: "1",
-      name: "Wireless Bluetooth Headphones",
-      price: 6499,
-      originalPrice: 8299,
-      image: headphonesImage,
-      quantity: 1,
-      category: "Electronics",
-    },
-    {
-      id: "2",
-      name: "Premium Coffee Maker",
-      price: 12499,
-      image: coffeeMakerImage,
-      quantity: 2,
-      category: "Home & Kitchen",
-    },
-    {
-      id: "3",
-      name: "Fitness Tracker Watch",
-      price: 16599,
-      originalPrice: 20749,
-      image: "/api/placeholder/100/100",
-      quantity: 1,
-      category: "Fitness",
-    },
-  ]);
+  const [coupon, setCoupon] = useState("");
+  const [applied, setApplied] = useState(false);
 
-  const updateQuantity = (id: string, newQuantity: number) => {
-    if (newQuantity < 1) return;
-    setCartItems(items =>
-      items.map(item => (item.id === id ? { ...item, quantity: newQuantity } : item))
-    );
-  };
-
-  const removeItem = (id: string) => {
-    setCartItems(items => items.filter(item => item.id !== id));
-  };
-
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shipping = subtotal > 4000 ? 0 : 99;
+  const shipping = subtotal === 0 ? 0 : subtotal > 4000 ? 0 : 99;
   const tax = Math.round(subtotal * 0.18);
-  const total = subtotal + shipping + tax;
+  const discount = applied ? Math.round(subtotal * 0.1) : 0;
+  const total = subtotal + shipping + tax - discount;
 
-  if (cartItems.length === 0) {
+  if (items.length === 0) {
     return (
       <Layout>
-        <div className="container mx-auto px-4 py-16">
-          <div className="text-center max-w-md mx-auto">
-            <div className="w-24 h-24 bg-secondary rounded-full flex items-center justify-center mx-auto mb-6">
-              <ShoppingBag className="w-12 h-12 text-muted-foreground" />
-            </div>
-            <h1 className="text-2xl font-bold mb-2">Your cart is empty</h1>
-            <p className="text-muted-foreground mb-6">
-              Looks like you haven't added anything to your cart yet.
-            </p>
-            <Button onClick={() => navigate("/products")} className="bg-gradient-primary shadow-button">
-              Continue Shopping
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+        <div className="container mx-auto px-4 py-24 text-center">
+          <div className="w-20 h-20 mx-auto rounded-full bg-secondary flex items-center justify-center mb-5">
+            <ShoppingBag className="w-9 h-9 text-muted-foreground" />
           </div>
+          <h1 className="font-display text-2xl font-bold mb-2">Your cart is empty</h1>
+          <p className="text-muted-foreground mb-6">Browse our collection to find something special.</p>
+          <Button onClick={() => navigate("/products")} className="bg-gradient-primary shadow-button rounded-full">
+            Start shopping <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
         </div>
       </Layout>
     );
@@ -94,165 +38,97 @@ const Cart = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => navigate(-1)}
-              className="hover:bg-primary hover:text-primary-foreground border-primary/20 bg-primary/5 h-9 w-9 sm:h-10 sm:w-10"
-            >
-              <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => navigate("/")}
-              className="hover:bg-secondary text-primary h-9 w-9 sm:h-10 sm:w-10"
-            >
-              <Home className="h-4 w-4 sm:h-5 sm:w-5" />
-            </Button>
-          </div>
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2">Shopping Cart</h1>
-            <p className="text-sm sm:text-base text-muted-foreground">
-              {cartItems.length} {cartItems.length === 1 ? "item" : "items"} in your cart
-            </p>
-          </div>
-        </div>
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        <button onClick={() => navigate(-1)} className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-4">
+          <ChevronLeft className="w-4 h-4 mr-1" /> Continue browsing
+        </button>
+        <h1 className="font-display text-3xl md:text-4xl font-bold">Your cart</h1>
+        <p className="text-muted-foreground mt-1">{items.length} {items.length === 1 ? "item" : "items"} ready to ship</p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-8 mt-8">
           <div className="lg:col-span-2 space-y-4">
-            {cartItems.map((item) => (
-              <Card key={item.id} className="bg-gradient-card border-0 shadow-card">
-                <CardContent className="p-4 sm:p-6">
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
-                    <div className="flex-shrink-0">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg"
-                      />
+            {items.map((item) => (
+              <div key={item.id} className="rounded-2xl border border-border/60 bg-card p-4 sm:p-5 shadow-card flex gap-4">
+                <img src={item.image} alt={item.name} className="w-20 h-20 sm:w-28 sm:h-28 rounded-xl object-cover" />
+                <div className="flex-1 min-w-0 flex flex-col">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="text-[10px] uppercase tracking-widest text-primary/80">{item.category}</p>
+                      <h3 className="font-display font-semibold truncate">{item.name}</h3>
+                      <p className="font-display font-bold mt-1">{inr(item.price)}</p>
                     </div>
-                    <div className="flex-grow w-full">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">
-                            {item.category}
-                          </p>
-                          <h3 className="font-semibold text-sm sm:text-base mb-2 truncate">{item.name}</h3>
-                          <div className="flex items-center space-x-2 flex-wrap">
-                            <span className="font-bold text-primary text-base sm:text-lg">
-                              {inr(item.price)}
-                            </span>
-                            {item.originalPrice && (
-                              <span className="text-xs sm:text-sm text-muted-foreground line-through">
-                                {inr(item.originalPrice)}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => removeItem(item.id)}
-                          className="text-muted-foreground hover:text-destructive h-8 w-8 sm:h-9 sm:w-9 flex-shrink-0"
-                        >
-                          <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
-                        </Button>
-                      </div>
-
-                      <div className="flex items-center justify-between sm:justify-start space-x-2 mt-3 sm:mt-4">
-                        <div className="flex items-center space-x-2">
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            className="h-7 w-7 sm:h-8 sm:w-8"
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          >
-                            <Minus className="w-3 h-3" />
-                          </Button>
-                          <Input
-                            type="number"
-                            value={item.quantity}
-                            onChange={(e) => updateQuantity(item.id, parseInt(e.target.value))}
-                            className="w-12 sm:w-16 h-7 sm:h-8 text-center text-sm"
-                            min="1"
-                          />
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            className="h-7 w-7 sm:h-8 sm:w-8"
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          >
-                            <Plus className="w-3 h-3" />
-                          </Button>
-                        </div>
-                        <span className="text-sm text-muted-foreground font-medium">
-                          {inr(item.price * item.quantity)}
-                        </span>
-                      </div>
-                    </div>
+                    <button onClick={() => remove(item.id)} className="text-muted-foreground hover:text-destructive p-1">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
-                </CardContent>
-              </Card>
+                  <div className="mt-auto pt-3 flex items-center justify-between">
+                    <div className="flex items-center border border-border rounded-full">
+                      <button onClick={() => update(item.id, item.quantity - 1)} className="h-8 w-8 flex items-center justify-center hover:text-primary">
+                        <Minus className="w-3 h-3" />
+                      </button>
+                      <span className="w-8 text-center text-sm">{item.quantity}</span>
+                      <button onClick={() => update(item.id, item.quantity + 1)} className="h-8 w-8 flex items-center justify-center hover:text-primary">
+                        <Plus className="w-3 h-3" />
+                      </button>
+                    </div>
+                    <span className="font-medium text-sm">{inr(item.price * item.quantity)}</span>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
 
-          <div className="lg:col-span-1">
-            <Card className="bg-gradient-card border-0 shadow-card sticky top-24">
-              <CardContent className="p-6">
-                <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Subtotal</span>
-                    <span>{inr(subtotal)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Shipping</span>
-                    <span>
-                      {shipping === 0 ? (
-                        <Badge variant="secondary" className="text-xs">FREE</Badge>
-                      ) : (
-                        inr(shipping)
-                      )}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">GST (18%)</span>
-                    <span>{inr(tax)}</span>
-                  </div>
-                  <Separator />
-                  <div className="flex justify-between text-lg font-semibold">
-                    <span>Total</span>
-                    <span className="text-primary">{inr(total)}</span>
-                  </div>
-                </div>
+          <aside className="rounded-2xl border border-border/60 bg-card p-6 h-fit sticky top-24 shadow-card">
+            <h2 className="font-display font-semibold text-lg mb-4">Order summary</h2>
 
-                {shipping > 0 && (
-                  <div className="mt-4 p-3 bg-secondary rounded-lg">
-                    <p className="text-sm text-muted-foreground">
-                      Add {inr(4000 - subtotal)} more for free shipping!
-                    </p>
-                  </div>
-                )}
+            <div className="flex gap-2 mb-4">
+              <div className="relative flex-1">
+                <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+                <Input
+                  placeholder="Coupon code"
+                  value={coupon}
+                  onChange={(e) => setCoupon(e.target.value)}
+                  className="pl-9 h-10 rounded-full bg-secondary/40"
+                />
+              </div>
+              <Button variant="outline" className="rounded-full" onClick={() => setApplied(coupon.trim().length > 0)}>
+                Apply
+              </Button>
+            </div>
+            {applied && <Badge className="bg-success/15 text-success border-success/30 mb-3">10% off applied ✦</Badge>}
 
-                <Button className="w-full mt-6 bg-gradient-primary shadow-button" size="lg">
-                  Proceed to Checkout
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+            <div className="space-y-2 text-sm">
+              <Row label="Subtotal" value={inr(subtotal)} />
+              <Row label="Shipping" value={shipping === 0 ? "Free" : inr(shipping)} />
+              <Row label="GST (18%)" value={inr(tax)} />
+              {discount > 0 && <Row label="Discount" value={`-${inr(discount)}`} accent />}
+              <Separator className="my-2" />
+              <div className="flex justify-between font-display text-lg font-bold">
+                <span>Total</span>
+                <span className="text-primary">{inr(total)}</span>
+              </div>
+            </div>
 
-                <Button variant="outline" className="w-full mt-3" onClick={() => navigate("/products")}>
-                  Continue Shopping
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
+            <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground p-3 rounded-xl bg-secondary/40">
+              <Truck className="w-4 h-4 text-primary shrink-0" />
+              <span>Estimated delivery 3–5 business days</span>
+            </div>
+
+            <Button className="w-full mt-5 h-11 bg-gradient-primary shadow-button rounded-full" onClick={() => navigate("/checkout")}>
+              Checkout <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </aside>
         </div>
       </div>
     </Layout>
   );
 };
+
+const Row = ({ label, value, accent }: { label: string; value: string; accent?: boolean }) => (
+  <div className="flex justify-between">
+    <span className="text-muted-foreground">{label}</span>
+    <span className={accent ? "text-success" : ""}>{value}</span>
+  </div>
+);
 
 export default Cart;
