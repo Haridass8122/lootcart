@@ -160,7 +160,13 @@ const ProductDetail = () => {
           </div>
         </div>
 
+        {/* AI Try-On */}
+        <div className="mt-12">
+          <TryOn productImage={product.image} productName={product.name} category={product.category} />
+        </div>
+
         {/* Tabs */}
+
         <div className="mt-16">
           <Tabs defaultValue="description">
             <TabsList className="bg-secondary/40">
