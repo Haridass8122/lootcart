@@ -45,12 +45,6 @@ export const Navigation = () => {
         <div className="flex items-center justify-between h-16 gap-4">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 shrink-0">
-            <div className="relative">
-              <div className="w-9 h-9 rounded-xl bg-gradient-gold flex items-center justify-center shadow-button">
-                <Sparkles className="w-4.5 h-4.5 text-primary-foreground" strokeWidth={2.5} />
-              </div>
-              <div className="absolute -inset-0.5 rounded-xl bg-gradient-gold opacity-30 blur-md -z-10" />
-            </div>
             <span className="font-display text-xl font-bold tracking-tight">
               Loot<span className="text-gold">Cart</span>
             </span>
