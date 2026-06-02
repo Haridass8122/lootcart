@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProductCard } from "@/components/ProductCard";
+import { TryOn } from "@/components/TryOn";
 import { getProduct, products } from "@/data/products";
 import { useCart, inr } from "@/hooks/use-cart";
 import {
