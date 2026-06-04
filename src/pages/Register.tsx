@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Sparkles, User, Mail, Lock, Phone, ArrowRight, ChevronLeft } from "lucide-react";
+import { User, Mail, Lock, Phone, ArrowRight, ChevronLeft } from "lucide-react";
 
 const Register = () => {
   const navigate = useNavigate();
