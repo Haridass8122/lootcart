@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Sparkles, User, Mail, Lock, Phone, ArrowRight, ChevronLeft } from "lucide-react";
+import { User, Mail, Lock, Phone, ArrowRight, ChevronLeft } from "lucide-react";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -16,9 +16,7 @@ const Register = () => {
           <ChevronLeft className="w-4 h-4 mr-1" /> Back
         </button>
         <Link to="/" className="flex items-center justify-center gap-2.5 mb-6">
-          <div className="w-10 h-10 rounded-xl bg-gradient-gold flex items-center justify-center shadow-button">
-            <Sparkles className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} />
-          </div>
+          <img src="/logo.png" alt="LootCart" className="w-10 h-10 rounded-xl object-cover shadow-button" />
           <span className="font-display text-2xl font-bold">Loot<span className="text-gold">Cart</span></span>
         </Link>
 

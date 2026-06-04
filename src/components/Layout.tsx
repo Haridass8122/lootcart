@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { CartDrawer } from "@/components/CartDrawer";
-import { Sparkles, Instagram, Twitter, Facebook } from "lucide-react";
+import { Instagram, Twitter, Facebook } from "lucide-react";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   return (
@@ -16,9 +16,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-10">
             <div className="col-span-2">
               <Link to="/" className="flex items-center gap-2.5 mb-4">
-                <div className="w-9 h-9 rounded-xl bg-gradient-gold flex items-center justify-center">
-                  <Sparkles className="w-4.5 h-4.5 text-primary-foreground" strokeWidth={2.5} />
-                </div>
+                <img src="/logo.png" alt="LootCart" className="w-9 h-9 rounded-xl object-cover" />
                 <span className="font-display text-xl font-bold">Loot<span className="text-gold">Cart</span></span>
               </Link>
               <p className="text-sm text-muted-foreground max-w-sm">
